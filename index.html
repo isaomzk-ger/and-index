@@ -9,7 +9,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --sidebar-w: 220px;
+  --sidebar-w: 240px;
   --bg: #f2f2f5;
   --surface: #ffffff;
   --border: rgba(0,0,0,0.07);
@@ -55,7 +55,7 @@ body {
 }
 
 .sidebar-logo .brand {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -.02em;
@@ -71,7 +71,7 @@ body {
 .sidebar-section { padding: 1.2rem 1rem .5rem; }
 
 .sidebar-section-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -84,14 +84,14 @@ body {
   display: flex;
   align-items: center;
   gap: .6rem;
-  padding: .55rem .8rem;
-  border-radius: 9px;
+  padding: .65rem .9rem;
+  border-radius: 10px;
   cursor: pointer;
   color: var(--sidebar-text);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   transition: all .15s;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
   text-decoration: none;
   border: none;
   background: none;
@@ -246,14 +246,14 @@ body {
 
 .section-color-bar { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
 
-.section-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -.01em; }
+.section-title { font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: -.01em; }
 
 .section-count { font-size: 11px; color: var(--text-tertiary); }
 
 /* ─── LARGE CARDS ─── */
 .grid-large {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 12px;
   margin-bottom: 10px;
 }
@@ -292,8 +292,8 @@ body {
   margin-bottom: .85rem;
 }
 
-.card-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: .3rem; letter-spacing: -.01em; }
-.card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.65; font-weight: 300; margin-bottom: .85rem; }
+.card-name { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: .3rem; letter-spacing: -.01em; }
+.card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; font-weight: 300; margin-bottom: .85rem; }
 
 .card-badge { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
 
@@ -461,7 +461,7 @@ const catConfig = {
 };
 
 const catOrder = ["組織・理念","情報・連絡","学習・育成","業務ツール"];
-const forceLarge = ["情報・連絡"];
+const forceLarge = ["情報・連絡","学習・育成","業務ツール"];
 let currentCat = "all";
 let currentTarget = "all";
 
