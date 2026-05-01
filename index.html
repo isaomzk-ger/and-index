@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>and° 社内インデックス</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-hover: rgba(0,0,0,0.15);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --text-tertiary: #999;
+    --accent: #1a1a1a;
+    --badge-all-bg: #eaf3de;
+    --badge-all-text: #3b6d11;
+    --badge-dir-bg: #e6f1fb;
+    --badge-dir-text: #185fa5;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .02em;
+  }
+
+  .logo span {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+
+  .header-badge {
+    font-size: 11px;
+    background: #f0f0ee;
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  .page-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: .4rem;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .chip {
+    font-size: 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .chip:hover { border-color: var(--border-hover); }
+
+  .chip.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .section { margin-bottom: 2rem; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+    display: block;
+    transition: border-color .15s, transform .1s, box-shadow .15s;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  }
+
+  .card-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-bottom: .65rem;
+  }
+
+  .card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: .3rem;
+    line-height: 1.4;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: .65rem;
+    min-height: 36px;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .badge-all { background: var(--badge-all-bg); color: var(--badge-all-text); }
+  .badge-dir { background: var(--badge-dir-bg); color: var(--badge-dir-text); }
+
+  .card-owner {
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    padding: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">and° <span>社内インデックス</span></div>
+    <div class="header-badge">社内限定</div>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">ドキュメントハブ</div>
+  <div class="page-sub">社内ドキュメントへのワンクリックアクセス</div>
+
+  <div class="filter-bar">
+    <button class="chip active" onclick="filter('all',this)">すべて</button>
+    <button class="chip" onclick="filter('組織・理念',this)">組織・理念</button>
+    <button class="chip" onclick="filter('情報・連絡',this)">情報・連絡</button>
+    <button class="chip" onclick="filter('学習・育成',this)">学習・育成</button>
+    <button class="chip" onclick="filter('業務ツール',this)">業務ツール</button>
+    <button class="chip" onclick="filter('案件管理',this)">案件管理</button>
+  </div>
+
+  <div id="sections"></div>
+</main>
+
+<footer>and° internal — 更新はスプレッドシートで管理</footer>
+
+<script>
+const data = [
+  {cat:"組織・理念",name:"PMVV",desc:"会社のパーパス・ミッション・ビジョン・バリューをまとめたもの。",target:"全員",url:"https://docs.google.com/document/d/1E7sxlXE7ss8AI-akq3UiUWwQji3h1QZTECMKY927uRc/edit",owner:"役員",icon:"🏛️"},
+  {cat:"組織・理念",name:"組織図",desc:"部門別の役割と担当者を図示したもの。人員変更時に随時更新。",target:"全員",url:"https://docs.google.com/spreadsheets/d/19k9TY8uyM61_S0uUyYb36p1iwuIj0ubyaZq8dyfB-0Y/edit?gid=1512344244",owner:"役員",icon:"🏢"},
+  {cat:"情報・連絡",name:"お知らせ",desc:"全体への告知・重要連絡をまとめた掲示板。",target:"全員",url:"#",owner:"役員",icon:"📢"},
+  {cat:"情報・連絡",name:"ミーティングリンク集",desc:"定例MTGや部門別打ち合わせのGoogle MeetリンクをまとめたURL一覧。",target:"全員",url:"#",owner:"本田",icon:"📅"},
+  {cat:"情報・連絡",name:"ディレクター共有ドライブ",desc:"ディレクターへの共有物をまとめたドライブへのリンク。",target:"ディレクター",url:"https://drive.google.com/drive/folders/15hNs3YYnVUzFADEm-fYN9p78pxphIbZO",owner:"古澤",icon:"📁"},
+  {cat:"学習・育成",name:"研修動画",desc:"新規ディレクター向けの研修動画の一覧。",target:"ディレクター",url:"#",owner:"鹿又・原・古澤",icon:"🎬"},
+  {cat:"学習・育成",name:"ディレクターマニュアル",desc:"業務ごとの手順書・ルールをまとめたドキュメント集。",target:"ディレクター",url:"#",owner:"鹿又・原・古澤",icon:"📖"},
+  {cat:"学習・育成",name:"動画品質改善マニュアル",desc:"動画品質を向上させる手順と手段をまとめたドキュメント。",target:"ディレクター",url:"#",owner:"原・古澤",icon:"⭐"},
+  {cat:"学習・育成",name:"収益化停止対策資料",desc:"YouTubeの収益化停止の情報と対策をまとめた資料。",target:"ディレクター",url:"#",owner:"鹿又・原・古澤",icon:"🛡️"},
+  {cat:"業務ツール",name:"各種フォーマット",desc:"リサーチシート・編集者管理シートなどの雛形テンプレート。コピーして使用すること。",target:"ディレクター",url:"#",owner:"鹿又・原・古澤",icon:"📋"},
+  {cat:"業務ツール",name:"サムネ・企画チェックシート",desc:"サムネイル・企画チェック時に使用するシート。",target:"ディレクター",url:"#",owner:"鹿又・原・古澤",icon:"✅"},
+  {cat:"業務ツール",name:"ディレクター週次報告シート",desc:"毎週日曜提出。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/1L_bBeLNUUv350Jrv9b9_siuBgQanXeleD63be9SqPAk/edit",owner:"小峯・松本",icon:"📊"},
+  {cat:"業務ツール",name:"オンボーディング表",desc:"案件ごとの進行スケジュールを管理するスプレッドシート。",target:"ディレクター",url:"#",owner:"小峯・新谷",icon:"🗓️"},
+  {cat:"案件管理",name:"YouTubeダッシュボード",desc:"and°で運用しているチャンネル全てをまとめたもの。",target:"全員",url:"https://youtube-dashboard-kohl.vercel.app/",owner:"松本",icon:"📺"},
+];
+
+const catOrder = ["組織・理念","情報・連絡","学習・育成","業務ツール","案件管理"];
+const iconBg = {"組織・理念":"#f1efe8","情報・連絡":"#e6f1fb","学習・育成":"#eaf3de","業務ツール":"#faeeda","案件管理":"#faece7"};
+
+function render(f) {
+  const container = document.getElementById("sections");
+  container.innerHTML = "";
+  const cats = f === "all" ? catOrder : [f];
+  cats.forEach(cat => {
+    const items = data.filter(d => d.cat === cat);
+    if (!items.length) return;
+    const sec = document.createElement("div");
+    sec.className = "section";
+    sec.innerHTML = `<div class="section-label">${cat}</div><div class="grid"></div>`;
+    container.appendChild(sec);
+    const grid = sec.querySelector(".grid");
+    items.forEach(item => {
+      const a = document.createElement("a");
+      a.className = "card";
+      a.href = item.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.innerHTML = `
+        <div class="card-icon" style="background:${iconBg[item.cat]}">${item.icon}</div>
+        <div class="card-name">${item.name}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-footer">
+          <span class="badge ${item.target==='全員'?'badge-all':'badge-dir'}">${item.target}</span>
+          <span class="card-owner">${item.owner}</span>
+        </div>`;
+      grid.appendChild(a);
+    });
+  });
+}
+
+function filter(cat, el) {
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
+  render(cat);
+}
+
+render("all");
+</script>
+</body>
+</html>
