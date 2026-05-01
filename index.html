@@ -10,7 +10,6 @@
 
 :root {
   --sidebar-w: 220px;
-  --header-h: 52px;
   --bg: #f2f2f5;
   --surface: #ffffff;
   --border: rgba(0,0,0,0.07);
@@ -22,23 +21,10 @@
   --sidebar-text: rgba(255,255,255,0.55);
   --sidebar-active: #ffffff;
   --sidebar-active-bg: rgba(255,255,255,0.1);
-
-  /* カテゴリカラー */
   --c-org: #7c5cfc;
-  --c-org-bg: #f3f0ff;
-  --c-org-light: #ede8ff;
   --c-info: #0a84ff;
-  --c-info-bg: #e8f2ff;
-  --c-info-light: #dceeff;
   --c-learn: #30b050;
-  --c-learn-bg: #e6f7ec;
-  --c-learn-light: #d4f0dc;
   --c-tool: #f59e0b;
-  --c-tool-bg: #fef8e7;
-  --c-tool-light: #fef0c7;
-  --c-mgmt: #ef4444;
-  --c-mgmt-bg: #fef0f0;
-  --c-mgmt-light: #fde0e0;
 }
 
 body {
@@ -49,7 +35,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── LAYOUT ─── */
 .app { display: flex; min-height: 100vh; }
 
 /* ─── SIDEBAR ─── */
@@ -83,9 +68,7 @@ body {
   font-weight: 300;
 }
 
-.sidebar-section {
-  padding: 1.2rem 1rem .5rem;
-}
+.sidebar-section { padding: 1.2rem 1rem .5rem; }
 
 .sidebar-section-label {
   font-size: 10px;
@@ -117,19 +100,9 @@ body {
 }
 
 .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.nav-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active); font-weight: 500; }
 
-.nav-item.active {
-  background: var(--sidebar-active-bg);
-  color: var(--sidebar-active);
-  font-weight: 500;
-}
-
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
 .nav-count {
   margin-left: auto;
@@ -140,10 +113,7 @@ body {
   border-radius: 10px;
 }
 
-.nav-item.active .nav-count {
-  background: rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.7);
-}
+.nav-item.active .nav-count { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
 
 .sidebar-footer {
   margin-top: auto;
@@ -155,11 +125,7 @@ body {
 }
 
 /* ─── MAIN ─── */
-.main {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  min-width: 0;
-}
+.main { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
 
 /* ─── HERO ─── */
 .hero {
@@ -245,7 +211,6 @@ body {
 .hero-card-label {
   font-size: 11px;
   color: rgba(255,255,255,0.4);
-  font-weight: 400;
   margin-bottom: 3px;
   letter-spacing: .05em;
 }
@@ -264,15 +229,10 @@ body {
   margin-top: 2px;
 }
 
-.hero-card-arrow {
-  font-size: 20px;
-  color: rgba(255,255,255,0.3);
-}
+.hero-card-arrow { font-size: 20px; color: rgba(255,255,255,0.3); }
 
 /* ─── CONTENT ─── */
-.content {
-  padding: 2rem 2.5rem 4rem;
-}
+.content { padding: 2rem 2.5rem 4rem; }
 
 /* ─── SECTION ─── */
 .section { margin-bottom: 2.5rem; }
@@ -284,25 +244,11 @@ body {
   margin-bottom: 1rem;
 }
 
-.section-color-bar {
-  width: 4px;
-  height: 20px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
+.section-color-bar { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
 
-.section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -.01em;
-}
+.section-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -.01em; }
 
-.section-count {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  font-weight: 400;
-}
+.section-count { font-size: 11px; color: var(--text-tertiary); }
 
 /* ─── LARGE CARDS ─── */
 .grid-large {
@@ -346,28 +292,10 @@ body {
   margin-bottom: .85rem;
 }
 
-.card-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: .3rem;
-  letter-spacing: -.01em;
-}
+.card-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: .3rem; letter-spacing: -.01em; }
+.card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.65; font-weight: 300; margin-bottom: .85rem; }
 
-.card-desc {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  font-weight: 300;
-  margin-bottom: .85rem;
-}
-
-.card-badge {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
+.card-badge { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
 
 /* ─── SMALL CARDS ─── */
 .grid-small {
@@ -424,232 +352,9 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-/* ─── HIDDEN ─── */
-.section[data-hidden="true"] { display: none; }
-
-/* ─── TABLE + DRAWER ─── */
-.table-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.table-section-header {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.table-section-bar {
-  width: 4px; height: 18px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-.table-section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.table-section-count {
-  font-size: 11px;
-  color: var(--text-tertiary);
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 36px 1fr 80px 28px;
-  align-items: center;
-  gap: 1rem;
-  padding: .9rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background .12s;
-}
-
-.table-row:last-child { border-bottom: none; }
-.table-row:hover { background: #f8f8f9; }
-.table-row.active { background: var(--row-bg, #f3f0ff); }
-
-.table-row-icon {
-  width: 34px; height: 34px;
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px;
-}
-
-.table-row-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.table-row-desc {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 300;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.table-row-badge {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.table-row-chevron {
-  font-size: 14px;
-  color: var(--text-tertiary);
-  transition: transform .2s;
-  text-align: right;
-}
-
-.table-row.active .table-row-chevron { transform: rotate(90deg); }
-
-/* ドロワー */
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.25);
-  z-index: 300;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s;
-  backdrop-filter: blur(2px);
-}
-
-.drawer-overlay.open {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.drawer {
-  position: fixed;
-  top: 0; right: 0; bottom: 0;
-  width: 380px;
-  background: var(--surface);
-  z-index: 400;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform .28s cubic-bezier(.4,0,.2,1);
-  box-shadow: -8px 0 40px rgba(0,0,0,.12);
-}
-
-.drawer.open { transform: translateX(0); }
-
-.drawer-header {
-  padding: 1.8rem 1.8rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.drawer-close {
-  position: absolute;
-  top: 1.2rem; right: 1.4rem;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: rgba(0,0,0,.06);
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--text-secondary);
-  display: flex; align-items: center; justify-content: center;
-  transition: background .15s;
-}
-
-.drawer-close:hover { background: rgba(0,0,0,.12); }
-
-.drawer-icon {
-  width: 52px; height: 52px;
-  border-radius: 15px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
-  margin-bottom: 1rem;
-}
-
-.drawer-cat {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  margin-bottom: .35rem;
-}
-
-.drawer-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -.02em;
-  margin-bottom: .5rem;
-  line-height: 1.2;
-}
-
-.drawer-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-weight: 300;
-}
-
-.drawer-body {
-  padding: 1.5rem 1.8rem;
-  flex: 1;
-  overflow-y: auto;
-}
-
-.drawer-meta {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  margin-bottom: 1.5rem;
-}
-
-.drawer-badge {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
-
-.drawer-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  width: 100%;
-  padding: .9rem;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  text-decoration: none;
-  transition: opacity .15s, transform .15s;
-}
-
-.drawer-cta:hover { opacity: .88; transform: translateY(-1px); }
-
 </style>
 </head>
 <body>
-
-<!-- DRAWER -->
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer">
-  <button class="drawer-close" onclick="closeDrawer()">✕</button>
-  <div class="drawer-header" id="drawerHeader"></div>
-  <div class="drawer-body" id="drawerBody"></div>
-</div>
 
 <div class="app">
 
@@ -753,86 +458,21 @@ const catConfig = {
   "情報・連絡":  { color: "#0a84ff", bg: "#e8f2ff", light: "#dceeff", badge: "#0a84ff" },
   "学習・育成":  { color: "#30b050", bg: "#e6f7ec", light: "#d4f0dc", badge: "#30b050" },
   "業務ツール":  { color: "#f59e0b", bg: "#fef8e7", light: "#fef0c7", badge: "#d97706" },
-  "案件管理":   { color: "#ef4444", bg: "#fef0f0", light: "#fde0e0", badge: "#ef4444" },
 };
 
 const catOrder = ["組織・理念","情報・連絡","学習・育成","業務ツール"];
-const forceLarge = ["情報・連絡","学習・育成","業務ツール"];
+const forceLarge = ["情報・連絡"];
 let currentCat = "all";
 let currentTarget = "all";
-
-let selectedItem = null;
-
-function openDrawer(item, cfg) {
-  selectedItem = item;
-  document.getElementById("drawerHeader").innerHTML = `
-    <div class="drawer-icon" style="background:${cfg.light}">${item.icon}</div>
-    <div class="drawer-cat" style="color:${cfg.color}">${item.cat}</div>
-    <div class="drawer-name">${item.name}</div>
-    <div class="drawer-desc">${item.desc}</div>`;
-  document.getElementById("drawerBody").innerHTML = `
-    <div class="drawer-meta">
-      <span class="drawer-badge" style="background:${cfg.color}22;color:${cfg.color}">${item.target}</span>
-    </div>
-    <a class="drawer-cta" href="${item.url}" target="_blank" rel="noopener noreferrer"
-      style="background:${cfg.color}">
-      ドキュメントを開く →
-    </a>`;
-  document.getElementById("drawer").classList.add("open");
-  document.getElementById("drawerOverlay").classList.add("open");
-}
-
-function closeDrawer() {
-  document.getElementById("drawer").classList.remove("open");
-  document.getElementById("drawerOverlay").classList.remove("open");
-}
 
 function render() {
   const container = document.getElementById("content");
   container.innerHTML = "";
 
-  // カテゴリ個別: テーブル + スライドドロワー
-  if (currentCat !== "all") {
-    const cfg = catConfig[currentCat];
-    let items = data.filter(d => d.cat === currentCat);
-    if (currentTarget !== "all") items = items.filter(d => d.target === currentTarget);
-    if (!items.length) return;
-
-    const wrap = document.createElement("div");
-    wrap.className = "table-wrap";
-
-    const hdr = document.createElement("div");
-    hdr.className = "table-section-header";
-    hdr.innerHTML = `
-      <div class="table-section-bar" style="background:${cfg.color}"></div>
-      <div class="table-section-title">${currentCat}</div>
-      <div class="table-section-count">${items.length}件</div>`;
-    wrap.appendChild(hdr);
-
-    items.forEach(item => {
-      const row = document.createElement("div");
-      row.className = "table-row";
-      row.style.setProperty("--row-bg", cfg.bg);
-      row.innerHTML = `
-        <div class="table-row-icon" style="background:${cfg.light}">${item.icon}</div>
-        <div>
-          <div class="table-row-name">${item.name}</div>
-          <div class="table-row-desc">${item.desc}</div>
-        </div>
-        <span class="table-row-badge" style="background:${cfg.color}22;color:${cfg.color}">${item.target}</span>
-        <div class="table-row-chevron">›</div>`;
-      row.onclick = () => openDrawer(item, cfg);
-      wrap.appendChild(row);
-    });
-
-    container.appendChild(wrap);
-    return;
-  }
-
-  // すべて表示: 従来のグリッド
   catOrder.forEach(cat => {
     const cfg = catConfig[cat];
     let items = data.filter(d => d.cat === cat);
+    if (currentCat !== "all" && currentCat !== cat) return;
     if (currentTarget !== "all") items = items.filter(d => d.target === currentTarget);
     if (!items.length) return;
 
