@@ -427,6 +427,186 @@ body {
 
 /* ─── HIDDEN ─── */
 .section[data-hidden="true"] { display: none; }
+
+/* ─── DETAIL LAYOUT (カテゴリ個別) ─── */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 16px;
+  height: calc(100vh - 52px - 2rem);
+  min-height: 500px;
+}
+
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.detail-list-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: .9rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+}
+
+.detail-list-item:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+.detail-list-item.selected {
+  border-color: var(--accent-color);
+  background: var(--accent-bg);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+
+.detail-list-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.detail-list-body { min-width: 0; flex: 1; }
+
+.detail-list-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-list-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.detail-list-arrow {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform .15s;
+}
+
+.detail-list-item.selected .detail-list-arrow {
+  transform: translateX(2px);
+}
+
+/* プレビューパネル */
+.detail-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+  max-height: calc(100vh - 52px - 4rem);
+}
+
+.preview-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.preview-icon {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin-bottom: 1.2rem;
+}
+
+.preview-cat {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+
+.preview-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -.02em;
+  margin-bottom: .6rem;
+  line-height: 1.2;
+}
+
+.preview-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.preview-body {
+  padding: 1.5rem 2rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.preview-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.preview-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.preview-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity .15s, transform .15s;
+  width: 100%;
+  justify-content: center;
+  margin-top: .5rem;
+}
+
+.preview-cta:hover { opacity: .88; transform: translateY(-1px); }
+
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  gap: .5rem;
+}
+
+.preview-empty-icon { font-size: 36px; margin-bottom: .5rem; }
 </style>
 </head>
 <body>
@@ -541,14 +721,75 @@ const forceLarge = ["情報・連絡","学習・育成","業務ツール"];
 let currentCat = "all";
 let currentTarget = "all";
 
+let selectedItem = null;
+
 function render() {
   const container = document.getElementById("content");
   container.innerHTML = "";
 
+  // カテゴリ個別: 左リスト + 右プレビュー
+  if (currentCat !== "all") {
+    const cfg = catConfig[currentCat];
+    let items = data.filter(d => d.cat === currentCat);
+    if (currentTarget !== "all") items = items.filter(d => d.target === currentTarget);
+    if (!items.length) return;
+
+    // 最初のアイテムを選択
+    if (!selectedItem || selectedItem.cat !== currentCat) selectedItem = items[0];
+
+    const layout = document.createElement("div");
+    layout.className = "detail-layout";
+    layout.style.setProperty("--accent-color", cfg.color);
+    layout.style.setProperty("--accent-bg", cfg.bg);
+
+    // 左リスト
+    const list = document.createElement("div");
+    list.className = "detail-list";
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "detail-list-item" + (item.name === selectedItem.name ? " selected" : "");
+      div.innerHTML = `
+        <div class="detail-list-icon" style="background:${cfg.light}">${item.icon}</div>
+        <div class="detail-list-body">
+          <div class="detail-list-name">${item.name}</div>
+          <div class="detail-list-sub">${item.target}</div>
+        </div>
+        <span class="detail-list-arrow">›</span>`;
+      div.onclick = () => { selectedItem = item; render(); };
+      list.appendChild(div);
+    });
+
+    // 右プレビュー
+    const preview = document.createElement("div");
+    preview.className = "detail-preview";
+    const si = selectedItem;
+    preview.innerHTML = `
+      <div class="preview-header" style="background:${cfg.bg}">
+        <div class="preview-icon" style="background:${cfg.light}">${si.icon}</div>
+        <div class="preview-cat" style="color:${cfg.color}">${si.cat}</div>
+        <div class="preview-name">${si.name}</div>
+        <div class="preview-desc">${si.desc}</div>
+      </div>
+      <div class="preview-body">
+        <div class="preview-meta-row">
+          <span class="preview-badge" style="background:${cfg.color}22;color:${cfg.color}">${si.target}</span>
+        </div>
+        <a class="preview-cta" href="${si.url}" target="_blank" rel="noopener noreferrer"
+          style="background:${cfg.color}">
+          ドキュメントを開く →
+        </a>
+      </div>`;
+
+    layout.appendChild(list);
+    layout.appendChild(preview);
+    container.appendChild(layout);
+    return;
+  }
+
+  // すべて表示: 従来のグリッド
   catOrder.forEach(cat => {
     const cfg = catConfig[cat];
     let items = data.filter(d => d.cat === cat);
-    if (currentCat !== "all" && currentCat !== cat) return;
     if (currentTarget !== "all") items = items.filter(d => d.target === currentTarget);
     if (!items.length) return;
 
@@ -565,7 +806,6 @@ function render() {
         <div class="section-count">${items.length}件</div>
       </div>`;
 
-    // 大カード（全員向け）
     if (allItems.length) {
       const gl = document.createElement("div");
       gl.className = "grid-large";
@@ -578,18 +818,15 @@ function render() {
         a.style.background = cfg.bg;
         a.style.borderColor = cfg.light;
         a.innerHTML = `
-          <style>.card-large[data-cat="${cat}"]::before { background: ${cfg.color}; }</style>
           <div class="card-icon" style="background:${cfg.light}">${item.icon}</div>
           <div class="card-name">${item.name}</div>
           <div class="card-desc">${item.desc}</div>
           <span class="card-badge" style="background:${cfg.color}22;color:${cfg.badge}">全員</span>`;
-        a.setAttribute("data-cat", cat);
         gl.appendChild(a);
       });
       sec.appendChild(gl);
     }
 
-    // 小カード（ディレクター向け）
     if (dirItems.length) {
       const gs = document.createElement("div");
       gs.className = "grid-small";
