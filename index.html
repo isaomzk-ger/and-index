@@ -604,11 +604,155 @@ body {
   margin-bottom: .6rem;
   padding-left: 2px;
 }
+
+/* ─── NOTICE BOARD MODAL ─── */
+.notice-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+  backdrop-filter: blur(4px);
+}
+.notice-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.notice-modal {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: var(--sidebar-w);
+  background: #f2f2f5;
+  z-index: 700;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+@media (max-width: 768px) { .notice-modal { left: 0; } }
+.notice-modal.open { transform: translateY(0); }
+
+.notice-modal-header {
+  background: #1d1d1f;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.notice-modal-title { font-size: 16px; font-weight: 600; color: #fff; }
+.notice-modal-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  border: none; color: #fff; font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.notice-modal-close:hover { background: rgba(255,255,255,.2); }
+
+.notice-filter-bar {
+  display: flex;
+  gap: 4px;
+  padding: .75rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.notice-filter-btn {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.1);
+  background: transparent;
+  color: #6e6e73;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.notice-filter-btn:hover { background: #f5f5f7; color: #1d1d1f; }
+.notice-filter-btn.active { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+
+.notice-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notice-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.07);
+  border-radius: 14px;
+  padding: 1.1rem 1.3rem;
+  position: relative;
+  transition: box-shadow .15s;
+}
+.notice-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); }
+.notice-card.pinned {
+  border-left: 3px solid #f59e0b;
+  background: #fffdf5;
+}
+
+.notice-card-top {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .5rem;
+}
+.notice-pin-icon { font-size: 13px; }
+
+.notice-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.notice-date {
+  font-size: 11px;
+  color: #aeaeb2;
+  margin-left: auto;
+}
+.notice-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: .35rem;
+  line-height: 1.4;
+}
+.notice-body-text {
+  font-size: 13px;
+  color: #6e6e73;
+  line-height: 1.65;
+  font-weight: 300;
+}
 </style>
 </head>
 <body>
 
 
+
+<!-- NOTICE BOARD MODAL -->
+<div class="notice-modal-overlay" id="noticeOverlay" onclick="closeNotice()"></div>
+<div class="notice-modal" id="noticeModal">
+  <div class="notice-modal-header">
+    <div class="notice-modal-title">📢 お知らせ</div>
+    <button class="notice-modal-close" onclick="closeNotice()">✕</button>
+  </div>
+  <div class="notice-filter-bar">
+    <button class="notice-filter-btn active" onclick="filterNotice('all', this)">すべて</button>
+    <button class="notice-filter-btn" onclick="filterNotice('重要', this)">🔴 重要</button>
+    <button class="notice-filter-btn" onclick="filterNotice('業務', this)">🔵 業務</button>
+    <button class="notice-filter-btn" onclick="filterNotice('その他', this)">⚪ その他</button>
+  </div>
+  <div class="notice-body" id="noticeBody"></div>
+</div>
 <!-- ORG CHART MODAL -->
 <div class="org-modal-overlay" id="orgOverlay" onclick="closeOrg()"></div>
 <div class="org-modal" id="orgModal">
@@ -729,7 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const data = [
   {cat:"組織・理念",name:"PMVV",desc:"会社のパーパス・ミッション・ビジョン・バリューをまとめたもの。",target:"全員",url:"https://docs.google.com/document/d/1F7qYxkQgVbLBG0g9mgVHSlA9Tq9shhRJBAAfKf4aZSE/edit?usp=sharing",icon:"🏛️"},
   {cat:"組織・理念",name:"組織図",desc:"部門別の役割と担当者を図示したもの。人員変更時に随時更新。",target:"全員",url:"#",icon:"🏢",action:"openOrg"},
-  {cat:"情報・連絡",name:"お知らせ",desc:"全体への告知・重要連絡をまとめた掲示板。",target:"全員",url:"https://docs.google.com/spreadsheets/d/1vt_5MUjQt2iH4HJbmP4AvVEjXs6TC1oN/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"📢"},
+  {cat:"情報・連絡",name:"お知らせ",desc:"全体への告知・重要連絡をまとめた掲示板。",target:"全員",url:"#",icon:"📢",action:"openNotice"},
   {cat:"情報・連絡",name:"ミーティングリンク集",desc:"定例MTGや部門別打ち合わせのGoogle MeetリンクをまとめたURL一覧。",target:"全員",url:"https://docs.google.com/spreadsheets/d/1ozjjtnwueH41ZTA6gFPHwRFdPmCDxuQk/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"📅"},
   {cat:"情報・連絡",name:"ディレクター共有ドライブ",desc:"ディレクターへの共有物をまとめたドライブへのリンク。",target:"ディレクター",url:"https://drive.google.com/drive/folders/15hNs3YYnVUzFADEm-fYN9p78pxphIbZO?usp=sharing",icon:"📁"},
   {cat:"学習・育成",name:"研修動画",desc:"新規ディレクター向けの研修動画の一覧。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/164e5WHi93P0C7IgVRtrKV_b6NRsfpPIe/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"🎬"},
@@ -789,6 +933,9 @@ function render() {
         if (item.action === "openOrg") {
           a.href = "#";
           a.onclick = (e) => { e.preventDefault(); openOrg(); };
+        } else if (item.action === "openNotice") {
+          a.href = "#";
+          a.onclick = (e) => { e.preventDefault(); openNotice(); };
         } else {
           a.href = item.url;
           a.target = "_blank";
@@ -897,8 +1044,8 @@ const orgData = {
       ]},
       { name: "YouTube品質管理部", color: "#ef4444", members: [
         { name: "鹿又", role: "クリエイティブチーフD", level: "exec" },
-        { name: "原", role: "①クリエイティブD", level: "exec" },
-        { name: "古澤", role: "②クリエイティブD", level: "exec" },
+        { name: "原", role: "クリエイティブD", level: "exec" },
+        { name: "古澤", role: "クリエイティブD", level: "exec" },
         { name: "新谷", role: "品質管理プロジェクト管理者", level: "exec" },
         { name: "松本", role: "AI顧問", level: "exec" }
       ]}
@@ -916,8 +1063,8 @@ const orgData = {
     top: { name: "鹿又", role: "クリエイティブチーフD" },
     depts: [
       { name: "メンバー", color: "#ef4444", members: [
-        { name: "原", role: "①クリエイティブD", level: "exec" },
-        { name: "古澤", role: "②クリエイティブD", level: "exec" },
+        { name: "原", role: "クリエイティブD", level: "exec" },
+        { name: "古澤", role: "クリエイティブD", level: "exec" },
         { name: "新谷", role: "品質管理プロジェクト管理者", level: "exec" },
         { name: "松本", role: "AI顧問", level: "exec" }
       ]}
@@ -961,8 +1108,8 @@ const allMembers = [
   { name: "山田ゆか", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "坂井 旭夏", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "鹿又", dept: "品質管理部", role: "クリエイティブチーフD", level: "exec" },
-  { name: "原", dept: "品質管理部", role: "①クリエイティブD", level: "exec" },
-  { name: "古澤", dept: "品質管理部", role: "②クリエイティブD", level: "exec" },
+  { name: "原", dept: "品質管理部", role: "クリエイティブD", level: "exec" },
+  { name: "古澤", dept: "品質管理部", role: "クリエイティブD", level: "exec" },
   { name: "新谷", dept: "品質管理部", role: "品質管理プロジェクト管理者", level: "exec" },
   { name: "松本", dept: "品質管理部", role: "AI顧問", level: "exec" },
 ];
@@ -1132,6 +1279,86 @@ function renderOrgBody(key) {
   });
 
   body.innerHTML = html;
+}
+
+// ─── NOTICE DATA ───
+// 追加する場合: { pinned, tag, date, title, body } を先頭に追加
+const noticeData = [
+  {
+    pinned: true,
+    tag: "重要",
+    tagColor: "#ef4444",
+    date: "2025.05.02",
+    title: "社内インデックスをリニューアルしました",
+    body: "and°の社内ドキュメントへのアクセスをより快適にするため、社内インデックスをホームページ形式にリニューアルしました。組織図・各種マニュアルへのリンクを整理しています。気になる点があれば担当者まで。"
+  },
+  {
+    pinned: true,
+    tag: "重要",
+    tagColor: "#ef4444",
+    date: "2025.05.01",
+    title: "週次報告シートの提出について",
+    body: "毎週日曜日23:59までにディレクター週次報告シートへの記入をお願いします。未提出が続く場合はリマインドを送付します。"
+  },
+  {
+    pinned: false,
+    tag: "業務",
+    tagColor: "#0a84ff",
+    date: "2025.04.28",
+    title: "ディレクターマニュアルを更新しました",
+    body: "動画品質改善マニュアルの第3章「サムネイル制作フロー」を更新しました。最新版を必ず確認してください。"
+  },
+  {
+    pinned: false,
+    tag: "その他",
+    tagColor: "#aeaeb2",
+    date: "2025.04.20",
+    title: "GW期間中の連絡について",
+    body: "4/29〜5/6はGW期間となります。緊急の場合はDiscordにて連絡をお願いします。通常業務は5/7より再開します。"
+  },
+];
+
+let currentNoticeFilter = "all";
+
+function openNotice() {
+  document.getElementById("noticeModal").classList.add("open");
+  document.getElementById("noticeOverlay").classList.add("open");
+  renderNotice();
+}
+
+function closeNotice() {
+  document.getElementById("noticeModal").classList.remove("open");
+  document.getElementById("noticeOverlay").classList.remove("open");
+}
+
+function filterNotice(tag, el) {
+  currentNoticeFilter = tag;
+  document.querySelectorAll(".notice-filter-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+  renderNotice();
+}
+
+function renderNotice() {
+  const body = document.getElementById("noticeBody");
+  let items = noticeData;
+  if (currentNoticeFilter !== "all") {
+    items = items.filter(n => n.tag === currentNoticeFilter);
+  }
+  // ピン留め → 新しい順
+  const pinned = items.filter(n => n.pinned);
+  const others = items.filter(n => !n.pinned);
+
+  body.innerHTML = [...pinned, ...others].map(n => `
+    <div class="notice-card ${n.pinned ? 'pinned' : ''}">
+      <div class="notice-card-top">
+        ${n.pinned ? '<span class="notice-pin-icon">📌</span>' : ''}
+        <span class="notice-tag" style="background:${n.tagColor}22;color:${n.tagColor}">${n.tag}</span>
+        <span class="notice-date">${n.date}</span>
+      </div>
+      <div class="notice-title">${n.title}</div>
+      <div class="notice-body-text">${n.body}</div>
+    </div>
+  `).join('');
 }
 </script>
 </body>
