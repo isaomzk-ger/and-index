@@ -352,10 +352,101 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ─── MOBILE ─── */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 500;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(29,29,31,0.92);
+  backdrop-filter: blur(10px);
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hamburger span {
+  display: block;
+  width: 18px; height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all .25s;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
+  }
+
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar-overlay { display: block; opacity: 0; pointer-events: none; transition: opacity .28s; }
+  .sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+  .main { margin-left: 0; }
+
+  .hero {
+    padding: 3.5rem 1.2rem 1.5rem;
+  }
+
+  .hero-title { font-size: 20px; }
+  .hero-sub { font-size: 12px; }
+
+  .hero-card {
+    padding: 1rem 1.1rem;
+    max-width: 100%;
+  }
+
+  .hero-card-name { font-size: 15px; }
+  .hero-card-icon { width: 40px; height: 40px; font-size: 18px; }
+
+  .content { padding: 1.5rem 1rem 3rem; }
+
+  .grid-large {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .grid-small {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .card-large { padding: 1.1rem 1.2rem; }
+  .card-name { font-size: 14px; }
+  .card-desc { font-size: 12px; }
+}
+
+@media (max-width: 400px) {
+  .grid-small { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="メニュー">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -437,6 +528,28 @@ body {
 </div>
 
 <script>
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// サイドバーのナビクリック時にモバイルで自動で閉じる
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeSidebar();
+    });
+  });
+});
+
+
 const data = [
   {cat:"組織・理念",name:"PMVV",desc:"会社のパーパス・ミッション・ビジョン・バリューをまとめたもの。",target:"全員",url:"https://docs.google.com/document/d/1F7qYxkQgVbLBG0g9mgVHSlA9Tq9shhRJBAAfKf4aZSE/edit?usp=sharing",icon:"🏛️"},
   {cat:"組織・理念",name:"組織図",desc:"部門別の役割と担当者を図示したもの。人員変更時に随時更新。",target:"全員",url:"https://docs.google.com/spreadsheets/d/19k9TY8uyM61_S0uUyYb36p1iwuIj0ubyaZq8dyfB-0Y/edit?gid=1512344244#gid=1512344244",icon:"🏢"},
