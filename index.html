@@ -439,10 +439,186 @@ body {
 @media (max-width: 400px) {
   .grid-small { grid-template-columns: 1fr; }
 }
+
+/* ─── ORG CHART MODAL ─── */
+.org-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+  backdrop-filter: blur(4px);
+}
+.org-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.org-modal {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: var(--sidebar-w);
+  background: #f2f2f5;
+  z-index: 700;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  .org-modal { left: 0; }
+}
+.org-modal.open { transform: translateY(0); }
+
+.org-modal-header {
+  background: #1d1d1f;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.org-modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -.01em;
+}
+.org-modal-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.org-modal-close:hover { background: rgba(255,255,255,.2); }
+
+.org-tabs {
+  display: flex;
+  gap: 4px;
+  padding: .75rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.org-tab {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.1);
+  background: transparent;
+  color: #6e6e73;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.org-tab:hover { background: #f5f5f7; color: #1d1d1f; }
+.org-tab.active { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+
+.org-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+/* トップカード */
+.org-top {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.org-top-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.org-top-name { font-size: 16px; font-weight: 700; color: #fff; }
+.org-top-role { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 2px; }
+
+/* 部門ヘッダー */
+.org-dept-header {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+.org-dept-bar { width: 4px; height: 18px; border-radius: 2px; }
+.org-dept-name { font-size: 14px; font-weight: 600; color: #1d1d1f; }
+
+/* メンバーグリッド */
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.org-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.07);
+  border-radius: 12px;
+  padding: .8rem 1rem;
+  transition: box-shadow .15s, transform .15s;
+}
+.org-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); transform: translateY(-1px); }
+.org-card.exec {
+  border-left: 3px solid var(--dept-color, #7c5cfc);
+}
+.org-card-name { font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 3px; }
+.org-card-role {
+  font-size: 10px;
+  color: #6e6e73;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.org-card-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+/* サブ部門 */
+.org-sub-section { margin-bottom: 1.5rem; }
+.org-sub-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #aeaeb2;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: .6rem;
+  padding-left: 2px;
+}
 </style>
 </head>
 <body>
 
+
+<!-- ORG CHART MODAL -->
+<div class="org-modal-overlay" id="orgOverlay" onclick="closeOrg()"></div>
+<div class="org-modal" id="orgModal">
+  <div class="org-modal-header">
+    <div class="org-modal-title">🏢 組織図</div>
+    <button class="org-modal-close" onclick="closeOrg()">✕</button>
+  </div>
+  <div class="org-tabs" id="orgTabs"></div>
+  <div class="org-body" id="orgBody"></div>
+</div>
 <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="メニュー">
   <span></span><span></span><span></span>
 </button>
@@ -552,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const data = [
   {cat:"組織・理念",name:"PMVV",desc:"会社のパーパス・ミッション・ビジョン・バリューをまとめたもの。",target:"全員",url:"https://docs.google.com/document/d/1F7qYxkQgVbLBG0g9mgVHSlA9Tq9shhRJBAAfKf4aZSE/edit?usp=sharing",icon:"🏛️"},
-  {cat:"組織・理念",name:"組織図",desc:"部門別の役割と担当者を図示したもの。人員変更時に随時更新。",target:"全員",url:"https://docs.google.com/spreadsheets/d/19k9TY8uyM61_S0uUyYb36p1iwuIj0ubyaZq8dyfB-0Y/edit?gid=1512344244#gid=1512344244",icon:"🏢"},
+  {cat:"組織・理念",name:"組織図",desc:"部門別の役割と担当者を図示したもの。人員変更時に随時更新。",target:"全員",url:"#",icon:"🏢",action:"openOrg"},
   {cat:"情報・連絡",name:"お知らせ",desc:"全体への告知・重要連絡をまとめた掲示板。",target:"全員",url:"https://docs.google.com/spreadsheets/d/1vt_5MUjQt2iH4HJbmP4AvVEjXs6TC1oN/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"📢"},
   {cat:"情報・連絡",name:"ミーティングリンク集",desc:"定例MTGや部門別打ち合わせのGoogle MeetリンクをまとめたURL一覧。",target:"全員",url:"https://docs.google.com/spreadsheets/d/1ozjjtnwueH41ZTA6gFPHwRFdPmCDxuQk/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"📅"},
   {cat:"情報・連絡",name:"ディレクター共有ドライブ",desc:"ディレクターへの共有物をまとめたドライブへのリンク。",target:"ディレクター",url:"https://drive.google.com/drive/folders/15hNs3YYnVUzFADEm-fYN9p78pxphIbZO?usp=sharing",icon:"📁"},
@@ -608,11 +784,16 @@ function render() {
       allItems.forEach(item => {
         const a = document.createElement("a");
         a.className = "card-large";
-        a.href = item.url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
         a.style.background = cfg.bg;
         a.style.borderColor = cfg.light;
+        if (item.action === "openOrg") {
+          a.href = "#";
+          a.onclick = (e) => { e.preventDefault(); openOrg(); };
+        } else {
+          a.href = item.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+        }
         a.innerHTML = `
           <div class="card-icon" style="background:${cfg.light}">${item.icon}</div>
           <div class="card-name">${item.name}</div>
@@ -667,6 +848,291 @@ function filterTarget(target, el) {
 }
 
 render();
+
+// ─── ORG DATA ───
+// YouTube事業部チーム（エグゼクティブクリック展開型）
+const ytTeams = [
+  {
+    exec: { name: "長尾", role: "エグゼクティブD", color: "#f59e0b" },
+    members: ["猪澤", "吉永", "石川千洋", "半澤"]
+  },
+  {
+    exec: { name: "新井", role: "エグゼクティブD", color: "#0a84ff" },
+    members: ["小松原", "田坂", "里澤", "船附", "吉田 昂将"]
+  },
+  {
+    exec: { name: "小峯", role: "エグゼクティブD / 事業部統括部長", color: "#30b050" },
+    members: ["都田", "矢内", "本田 柊斗", "吉見 祐美"]
+  },
+  {
+    exec: { name: "吉見 愛莉", role: "エグゼクティブD", color: "#7c5cfc" },
+    members: ["浅岡 八千代", "中嶋", "高橋さやか", "山田ゆか", "坂井 旭夏"]
+  }
+];
+
+let expandedExec = null;
+
+const orgData = {
+  overview: {
+    label: "全体概要",
+    color: "#1d1d1f",
+    top: { name: "石川直輝", role: "代表取締役社長 / 経営陣" },
+    depts: [
+      { name: "人事部", color: "#7c5cfc", members: [
+        { name: "本田", role: "人事部長", level: "exec" }
+      ]},
+      { name: "経営陣（役員）", color: "#0a84ff", members: [
+        { name: "田畑祐希", role: "CMO / 外部役員 / 経営陣", level: "exec" },
+        { name: "望月和義", role: "CFO / 外部役員 / 経営陣", level: "exec" },
+        { name: "本田", role: "人事部長 / 経営陣", level: "exec" }
+      ]},
+      { name: "CS事業部", color: "#30b050", members: [
+        { name: "新谷", role: "CS事業部長", level: "exec" }
+      ]},
+      { name: "YouTube事業部", color: "#f59e0b", members: [
+        { name: "長尾", role: "エグゼクティブD", level: "exec" },
+        { name: "新井", role: "エグゼクティブD", level: "exec" },
+        { name: "小峯", role: "エグゼクティブD / 事業部統括部長", level: "exec" },
+        { name: "吉見 愛莉", role: "エグゼクティブD", level: "exec" }
+      ]},
+      { name: "YouTube品質管理部", color: "#ef4444", members: [
+        { name: "鹿又", role: "クリエイティブチーフD", level: "exec" },
+        { name: "原", role: "①クリエイティブD", level: "exec" },
+        { name: "古澤", role: "②クリエイティブD", level: "exec" },
+        { name: "新谷", role: "品質管理プロジェクト管理者", level: "exec" },
+        { name: "松本", role: "AI顧問", level: "exec" }
+      ]}
+    ]
+  },
+  yt: {
+    label: "YouTube事業部",
+    color: "#f59e0b",
+    top: null,
+    depts: []
+  },
+  quality: {
+    label: "品質管理部",
+    color: "#ef4444",
+    top: { name: "鹿又", role: "クリエイティブチーフD" },
+    depts: [
+      { name: "メンバー", color: "#ef4444", members: [
+        { name: "原", role: "①クリエイティブD", level: "exec" },
+        { name: "古澤", role: "②クリエイティブD", level: "exec" },
+        { name: "新谷", role: "品質管理プロジェクト管理者", level: "exec" },
+        { name: "松本", role: "AI顧問", level: "exec" }
+      ]}
+    ]
+  },
+  list: {
+    label: "一覧表",
+    color: "#1d1d1f",
+    top: null,
+    depts: []
+  }
+};
+
+// 一覧表用：全メンバーをフラットに
+const allMembers = [
+  { name: "石川直輝", dept: "経営", role: "代表取締役社長", level: "exec" },
+  { name: "田畑祐希", dept: "経営", role: "CMO / 外部役員", level: "exec" },
+  { name: "望月和義", dept: "経営", role: "CFO / 外部役員", level: "exec" },
+  { name: "本田", dept: "人事部", role: "人事部長", level: "exec" },
+  { name: "新谷", dept: "CS事業部", role: "CS事業部長", level: "exec" },
+  { name: "長尾", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
+  { name: "猪澤", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "吉永", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "石川千洋", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "半澤", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "新井", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
+  { name: "小松原", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "田坂", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "里澤", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "船附", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "吉田 昂将", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "小峯", dept: "YouTube事業部", role: "エグゼクティブD / 事業部統括部長", level: "exec" },
+  { name: "都田", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "矢内", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "本田 柊斗", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "吉見 祐美", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "吉見 愛莉", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
+  { name: "浅岡 八千代", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "中嶋", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "高橋さやか", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "山田ゆか", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "坂井 旭夏", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "鹿又", dept: "品質管理部", role: "クリエイティブチーフD", level: "exec" },
+  { name: "原", dept: "品質管理部", role: "①クリエイティブD", level: "exec" },
+  { name: "古澤", dept: "品質管理部", role: "②クリエイティブD", level: "exec" },
+  { name: "新谷", dept: "品質管理部", role: "品質管理プロジェクト管理者", level: "exec" },
+  { name: "松本", dept: "品質管理部", role: "AI顧問", level: "exec" },
+];
+
+let currentOrgTab = "overview";
+
+function openOrg() {
+  document.getElementById("orgModal").classList.add("open");
+  document.getElementById("orgOverlay").classList.add("open");
+  renderOrgTabs();
+  renderOrgBody(currentOrgTab);
+}
+
+function closeOrg() {
+  document.getElementById("orgModal").classList.remove("open");
+  document.getElementById("orgOverlay").classList.remove("open");
+}
+
+function renderOrgTabs() {
+  const tabs = document.getElementById("orgTabs");
+  tabs.innerHTML = Object.entries(orgData).map(([key, val]) => `
+    <button class="org-tab ${key === currentOrgTab ? 'active' : ''}"
+      onclick="switchOrgTab('${key}')">${val.label}</button>
+  `).join('');
+}
+
+function switchOrgTab(key) {
+  currentOrgTab = key;
+  renderOrgTabs();
+  renderOrgBody(key);
+}
+
+function toggleExec(idx) {
+  expandedExec = expandedExec === idx ? null : idx;
+  renderOrgBody("yt");
+}
+
+function renderOrgBody(key) {
+  const dept = orgData[key];
+  const body = document.getElementById("orgBody");
+  let html = '';
+
+  // YouTube事業部：エグゼクティブ展開型
+  if (key === "yt") {
+    html += `<div style="margin-bottom:1rem;font-size:12px;color:#aeaeb2">エグゼクティブをクリックするとメンバーが表示されます</div>`;
+    ytTeams.forEach((team, idx) => {
+      const isOpen = expandedExec === idx;
+      const c = team.exec.color;
+      html += `
+        <div style="margin-bottom:8px">
+          <div onclick="toggleExec(${idx})" style="
+            background:${isOpen ? c : '#fff'};
+            border:1px solid ${isOpen ? c : 'rgba(0,0,0,.07)'};
+            border-radius:${isOpen ? '14px 14px 0 0' : '14px'};
+            padding:.9rem 1.2rem;
+            display:flex;align-items:center;justify-content:space-between;
+            cursor:pointer;transition:all .15s;
+          ">
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <div style="
+                width:36px;height:36px;border-radius:10px;
+                background:${isOpen ? 'rgba(255,255,255,.2)' : c+'22'};
+                display:flex;align-items:center;justify-content:center;
+                font-size:16px;flex-shrink:0
+              ">👤</div>
+              <div>
+                <div style="font-size:14px;font-weight:600;color:${isOpen?'#fff':'#1d1d1f'}">${team.exec.name}</div>
+                <div style="font-size:11px;color:${isOpen?'rgba(255,255,255,.6)':'#aeaeb2'};margin-top:2px">${team.exec.role}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${isOpen?'rgba(255,255,255,.2)':''+c+'22'};color:${isOpen?'#fff':c}">${team.members.length}名</span>
+              <span style="font-size:16px;color:${isOpen?'rgba(255,255,255,.7)':'#aeaeb2'};transition:transform .2s;display:inline-block;transform:rotate(${isOpen?'90deg':'0deg'})"">›</span>
+            </div>
+          </div>
+          ${isOpen ? `
+          <div style="
+            background:#fafafa;border:1px solid ${c};border-top:none;
+            border-radius:0 0 14px 14px;padding:.75rem;
+            display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px
+          ">
+            ${team.members.map(m => `
+              <div style="
+                background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:10px;
+                padding:.65rem .85rem;
+              ">
+                <div style="font-size:12px;font-weight:500;color:#1d1d1f">${m}</div>
+                <div style="font-size:10px;color:#aeaeb2;margin-top:2px">ディレクター</div>
+              </div>`).join('')}
+          </div>` : ''}
+        </div>`;
+    });
+    body.innerHTML = html;
+    return;
+  }
+
+  // 一覧表ビュー
+  if (key === "list") {
+    const deptColors = {
+      "経営": "#1d1d1f", "人事部": "#7c5cfc", "CS事業部": "#30b050",
+      "YT第1営業部": "#f59e0b", "YT第2営業部": "#0a84ff",
+      "YT第3営業部": "#30b050", "YT第4営業部": "#7c5cfc", "品質管理部": "#ef4444"
+    };
+    html += `<div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.07)">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead>
+          <tr style="background:#f5f5f7;border-bottom:1px solid rgba(0,0,0,.07)">
+            <th style="padding:.75rem 1rem;text-align:left;font-weight:600;color:#1d1d1f;font-size:11px;letter-spacing:.05em">氏名</th>
+            <th style="padding:.75rem 1rem;text-align:left;font-weight:600;color:#1d1d1f;font-size:11px;letter-spacing:.05em">部署</th>
+            <th style="padding:.75rem 1rem;text-align:left;font-weight:600;color:#1d1d1f;font-size:11px;letter-spacing:.05em">役職</th>
+            <th style="padding:.75rem 1rem;text-align:left;font-weight:600;color:#1d1d1f;font-size:11px;letter-spacing:.05em">区分</th>
+          </tr>
+        </thead>
+        <tbody>`;
+    allMembers.forEach((m, i) => {
+      const c = deptColors[m.dept] || "#888";
+      const isExec = m.level === "exec";
+      html += `<tr style="border-bottom:1px solid rgba(0,0,0,.05);${i%2===0?'':'background:#fafafa'}">
+        <td style="padding:.7rem 1rem;font-weight:500;color:#1d1d1f">${m.name}</td>
+        <td style="padding:.7rem 1rem">
+          <span style="display:inline-flex;align-items:center;gap:5px">
+            <span style="width:8px;height:8px;border-radius:50%;background:${c};display:inline-block;flex-shrink:0"></span>
+            <span style="color:#6e6e73;font-size:12px">${m.dept}</span>
+          </span>
+        </td>
+        <td style="padding:.7rem 1rem;color:#6e6e73;font-size:12px">${m.role}</td>
+        <td style="padding:.7rem 1rem">
+          <span style="font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;background:${isExec?c+'22':'#f0f0f0'};color:${isExec?c:'#888'}">${isExec?'管理職':'ディレクター'}</span>
+        </td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+    body.innerHTML = html;
+    return;
+  }
+
+  // トップカード
+  if (dept.top) {
+    html += `<div class="org-top">
+      <div class="org-top-avatar">👤</div>
+      <div>
+        <div class="org-top-name">${dept.top.name}</div>
+        <div class="org-top-role">${dept.top.role}</div>
+      </div>
+    </div>`;
+  }
+
+  // 部門ごと
+  dept.depts.forEach(d => {
+    html += `<div class="org-sub-section">
+      <div class="org-dept-header">
+        <div class="org-dept-bar" style="background:${d.color}"></div>
+        <div class="org-dept-name">${d.name}</div>
+      </div>
+      <div class="org-grid">`;
+    d.members.forEach(m => {
+      const isExec = m.level === "exec";
+      const badgeColor = isExec ? d.color : '#aeaeb2';
+      const badgeText = isExec ? "管理職" : "ディレクター";
+      html += `<div class="org-card ${isExec ? 'exec' : ''}" style="--dept-color:${d.color}">
+        <div class="org-card-name">${m.name}</div>
+        <div class="org-card-role">${m.role}</div>
+        <span class="org-card-badge" style="background:${badgeColor}22;color:${badgeColor}">${badgeText}</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  body.innerHTML = html;
+}
 </script>
 </body>
 </html>
