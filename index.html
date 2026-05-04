@@ -941,6 +941,97 @@ body {
   font-size: 14px; color: #d97706; font-weight: 500; line-height: 1.6;
 }
 .pmvv-concept-solution strong { color: #92400e; font-weight: 700; }
+
+/* ─── TEAM POPUP ─── */
+.team-popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 900;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.team-popup-overlay.open { opacity: 1; pointer-events: all; }
+
+.team-popup {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -46%) scale(.96);
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  width: min(420px, 90vw);
+  z-index: 950;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  opacity: 0; pointer-events: none;
+  transition: all .22s cubic-bezier(.4,0,.2,1);
+}
+.team-popup.open {
+  opacity: 1; pointer-events: all;
+  transform: translate(-50%, -50%) scale(1);
+}
+.team-popup-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.team-popup-title {
+  display: flex; align-items: center; gap: .6rem;
+}
+.team-popup-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.team-popup-name { font-size: 16px; font-weight: 700; color: #1d1d1f; }
+.team-popup-role { font-size: 11px; color: #aeaeb2; margin-top: 1px; }
+.team-popup-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #f0f0f2; border: none; cursor: pointer;
+  font-size: 14px; color: #6e6e73;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.team-popup-close:hover { background: #e0e0e2; }
+.team-popup-divider {
+  height: 1px; background: rgba(0,0,0,.06); margin-bottom: 1rem;
+}
+.team-popup-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: #aeaeb2; margin-bottom: .6rem;
+}
+.team-popup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+.team-popup-member {
+  background: #f8f8f9; border-radius: 10px;
+  padding: .65rem .8rem;
+}
+.team-popup-member-name {
+  font-size: 12px; font-weight: 500; color: #1d1d1f;
+}
+.team-popup-member-role {
+  font-size: 10px; color: #aeaeb2; margin-top: 2px;
+}
+/* クリック可能なカードのスタイル */
+.org-card.clickable {
+  cursor: pointer;
+  transition: box-shadow .15s, transform .15s, border-color .15s;
+}
+.org-card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.1);
+  border-color: var(--dept-color, #f59e0b) !important;
+}
+.org-card.clickable::after {
+  content: '👥';
+  font-size: 11px;
+  position: absolute;
+  bottom: .6rem; right: .7rem;
+  opacity: .5;
+}
+.org-card { position: relative; }
 </style>
 </head>
 <body>
@@ -949,6 +1040,24 @@ body {
 
 
 
+
+<!-- TEAM POPUP -->
+<div class="team-popup-overlay" id="teamPopupOverlay" onclick="closeTeamPopup()"></div>
+<div class="team-popup" id="teamPopup">
+  <div class="team-popup-header">
+    <div class="team-popup-title">
+      <div class="team-popup-icon" id="teamPopupIcon"></div>
+      <div>
+        <div class="team-popup-name" id="teamPopupName"></div>
+        <div class="team-popup-role" id="teamPopupRole"></div>
+      </div>
+    </div>
+    <button class="team-popup-close" onclick="closeTeamPopup()">✕</button>
+  </div>
+  <div class="team-popup-divider"></div>
+  <div class="team-popup-label">チームメンバー</div>
+  <div class="team-popup-grid" id="teamPopupGrid"></div>
+</div>
 <!-- PMVV MODAL -->
 <div class="pmvv-modal-overlay" id="pmvvOverlay" onclick="closePMVV()"></div>
 <div class="pmvv-modal" id="pmvvModal">
@@ -1584,11 +1693,25 @@ function renderOrgBody(key) {
       const isExec = m.level === "exec";
       const badgeColor = isExec ? d.color : '#aeaeb2';
       const badgeText = isExec ? "管理職" : "ディレクター";
-      html += `<div class="org-card ${isExec ? 'exec' : ''}" style="--dept-color:${d.color}">
-        <div class="org-card-name">${m.name}</div>
-        <div class="org-card-role">${m.role}</div>
-        <span class="org-card-badge" style="background:${badgeColor}22;color:${badgeColor}">${badgeText}</span>
-      </div>`;
+
+      // YouTube事業部のエグゼクティブはクリック可能
+      const isYTExec = key === "overview" && d.name === "YouTube事業部" && isExec;
+      const team = isYTExec ? ytTeams.find(t => t.exec.name === m.name) : null;
+
+      if (team) {
+        const membersJson = JSON.stringify(team.members).replace(/'/g, "\\'");
+        html += `<div onclick="openTeamPopup(this)" data-name="${m.name}" data-role="${m.role}" data-members='${JSON.stringify(team.members).replace(/'/g, "&apos;")}' data-color="${d.color}" data-light="${d.color}22" class="org-card ${isExec ? 'exec' : ''} clickable" style="--dept-color:${d.color}">
+          <div class="org-card-name">${m.name}</div>
+          <div class="org-card-role">${m.role}</div>
+          <span class="org-card-badge" style="background:${badgeColor}22;color:${badgeColor}">${badgeText}</span>
+        </div>`;
+      } else {
+        html += `<div class="org-card ${isExec ? 'exec' : ''}" style="--dept-color:${d.color}">
+          <div class="org-card-name">${m.name}</div>
+          <div class="org-card-role">${m.role}</div>
+          <span class="org-card-badge" style="background:${badgeColor}22;color:${badgeColor}">${badgeText}</span>
+        </div>`;
+      }
     });
     html += `</div></div>`;
   });
@@ -1840,6 +1963,30 @@ function openPMVV() {
 function closePMVV() {
   document.getElementById("pmvvModal").classList.remove("open");
   document.getElementById("pmvvOverlay").classList.remove("open");
+}
+
+function openTeamPopup(el) {
+  const name = el.dataset.name;
+  const role = el.dataset.role;
+  const members = JSON.parse(el.dataset.members.replace(/&apos;/g, "'"));
+  const light = el.dataset.light;
+  document.getElementById("teamPopupIcon").style.background = light;
+  document.getElementById("teamPopupIcon").textContent = "👤";
+  document.getElementById("teamPopupName").textContent = name;
+  document.getElementById("teamPopupRole").textContent = role;
+  document.getElementById("teamPopupGrid").innerHTML = members.map(m => `
+    <div class="team-popup-member">
+      <div class="team-popup-member-name">${m}</div>
+      <div class="team-popup-member-role">ディレクター</div>
+    </div>
+  `).join('');
+  document.getElementById("teamPopup").classList.add("open");
+  document.getElementById("teamPopupOverlay").classList.add("open");
+}
+
+function closeTeamPopup() {
+  document.getElementById("teamPopup").classList.remove("open");
+  document.getElementById("teamPopupOverlay").classList.remove("open");
 }
 </script>
 </body>
