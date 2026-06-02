@@ -1093,73 +1093,86 @@ body {
 }
 .org-card { position: relative; }
 
-/* ─── MVV STRIP (top page) ─── */
-.mvv-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+/* ─── PMVV PYRAMID (top page) ─── */
+.pmvv-top {
+  max-width: 1040px; margin: 0 auto;
   padding: 1.75rem 2.5rem .5rem;
-}
-@media (max-width: 768px) {
-  .mvv-strip { grid-template-columns: 1fr; padding: 1.25rem 1rem .25rem; }
-}
-.mvv-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: 5px solid var(--mc, #7c5cfc);
-  border-radius: 18px;
-  padding: 1.5rem 1.7rem 1.7rem;
+  display: flex; flex-direction: column; align-items: center;
   cursor: pointer;
-  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+@media (max-width: 768px) { .pmvv-top { padding: 1.25rem 1rem .25rem; } }
+
+/* Purpose：頂点 */
+.pmvv-apex {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%);
+  border-radius: 18px; padding: 1.4rem 2rem; text-align: center;
+  max-width: 640px; width: 100%; position: relative;
+  box-shadow: 0 8px 28px rgba(15,52,96,.25);
+  transition: transform .15s, box-shadow .15s;
+}
+.pmvv-top:hover .pmvv-apex { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(15,52,96,.32); }
+.pmvv-apex-label {
+  font-size: 12px; font-weight: 700; letter-spacing: .12em;
+  color: rgba(255,255,255,.45); margin-bottom: .55rem;
+}
+.pmvv-apex-text { font-size: 19px; font-weight: 700; color: #fff; line-height: 1.65; }
+.pmvv-apex-text span { color: #a78bfa; }
+
+/* コネクタ */
+.pmvv-connector { width: 2px; height: 22px; background: #d0d0d6; }
+
+/* Mission / Vision：中層 */
+.pmvv-mid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  width: 100%; max-width: 880px;
+}
+@media (max-width: 768px) { .pmvv-mid { grid-template-columns: 1fr; } }
+.pmvv-mid-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 5px solid var(--mc, #7c5cfc);
+  border-radius: 16px; padding: 1.3rem 1.5rem;
   box-shadow: 0 2px 10px rgba(0,0,0,.04);
 }
-.mvv-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0,0,0,.1);
-}
-.mvv-card-head {
-  display: flex; align-items: center; gap: .75rem;
-  margin-bottom: 1.1rem;
-  padding-bottom: .9rem;
-  border-bottom: 1px solid rgba(0,0,0,.06);
-}
-.mvv-card-icon {
-  width: 46px; height: 46px; border-radius: 13px;
+.pmvv-mid-head { display: flex; align-items: center; gap: .65rem; margin-bottom: .75rem; }
+.pmvv-mid-icon {
+  width: 42px; height: 42px; border-radius: 12px;
   background: color-mix(in srgb, var(--mc, #7c5cfc) 14%, white);
   display: flex; align-items: center; justify-content: center;
-  font-size: 24px; flex-shrink: 0;
+  font-size: 22px; flex-shrink: 0;
 }
-.mvv-card-label {
-  font-size: 19px; font-weight: 800; letter-spacing: .02em;
-  color: var(--mc, #7c5cfc);
+.pmvv-mid-label {
+  font-size: 18px; font-weight: 800; color: var(--mc, #7c5cfc);
   display: flex; flex-direction: column; line-height: 1.1;
 }
-.mvv-card-label span {
-  font-size: 11px; font-weight: 600; color: var(--text-tertiary);
-  letter-spacing: .04em; margin-top: 3px;
-}
-.mvv-card-text {
-  font-size: 20px; color: var(--text-primary);
-  line-height: 1.75; font-weight: 600;
-}
-.mvv-card-text strong { color: var(--mc, #7c5cfc); font-weight: 800; }
+.pmvv-mid-label small { font-size: 10px; font-weight: 600; color: var(--text-tertiary); margin-top: 3px; }
+.pmvv-mid-text { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.7; }
+.pmvv-mid-text strong { color: var(--mc, #7c5cfc); font-weight: 800; }
 
-/* Value：番号付き図解 */
-.mvv-vlist { display: flex; flex-direction: column; gap: 12px; }
-.mvv-vrow { display: flex; align-items: center; gap: .8rem; }
-.mvv-vnum {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: var(--mc, #7c5cfc); color: #fff;
-  font-size: 17px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+/* Value：土台（3本柱） */
+.pmvv-base {
+  width: 100%; max-width: 980px; margin-top: 18px;
+  background: #faf8ff; border: 1px solid #ece6ff;
+  border-radius: 16px; padding: 1.2rem 1.5rem; position: relative;
 }
-.mvv-vtxt { font-size: 18px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
-
-@media (max-width: 768px) {
-  .mvv-card { padding: 1.3rem 1.4rem 1.4rem; }
-  .mvv-card-text { font-size: 17px; }
-  .mvv-vtxt { font-size: 16px; }
+.pmvv-base::before {
+  content: ''; position: absolute; top: -18px; left: 50%;
+  width: 2px; height: 18px; background: #d0d0d6;
+}
+.pmvv-base-label {
+  font-size: 13px; font-weight: 800; letter-spacing: .06em;
+  color: #7c5cfc; margin-bottom: .9rem; text-align: center;
+}
+.pmvv-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 768px) { .pmvv-pillars { grid-template-columns: 1fr; } }
+.pmvv-pillar {
+  background: #fff; border: 1px solid #ece6ff; border-radius: 12px;
+  padding: .85rem 1rem; display: flex; align-items: center; gap: .6rem;
+  font-size: 15px; font-weight: 600; color: var(--text-primary);
+}
+.pmvv-pillar-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #7c5cfc; color: #fff; font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 
 /* ─── ORG TREE ─── */
@@ -1487,30 +1500,37 @@ body {
     </div>
 
     <!-- MVV STRIP -->
-    <div class="mvv-strip" id="mvvStrip">
-      <div class="mvv-card" style="--mc:#0a84ff" onclick="openPMVV()">
-        <div class="mvv-card-head">
-          <div class="mvv-card-icon">🎯</div>
-          <div class="mvv-card-label">Mission<span>使命</span></div>
-        </div>
-        <div class="mvv-card-text"><strong>非属人チャンネル運用</strong>を軸に、低コスト・高再現性の事業を構築し、利益率向上と節税を同時に実現する</div>
+    <div class="pmvv-top" id="mvvStrip" onclick="openPMVV()" title="クリックで詳細（PMVV）を表示">
+      <!-- Purpose：頂点 -->
+      <div class="pmvv-apex">
+        <div class="pmvv-apex-label">PURPOSE｜存在意義</div>
+        <div class="pmvv-apex-text">挑戦する企業が、<span>恐怖ではなく、安心を土台に</span>前へ進めるようにする</div>
       </div>
-      <div class="mvv-card" style="--mc:#30b050" onclick="openPMVV()">
-        <div class="mvv-card-head">
-          <div class="mvv-card-icon">🌍</div>
-          <div class="mvv-card-label">Vision<span>目指す世界</span></div>
+      <div class="pmvv-connector"></div>
+      <!-- Mission / Vision：中層 -->
+      <div class="pmvv-mid">
+        <div class="pmvv-mid-card" style="--mc:#0a84ff">
+          <div class="pmvv-mid-head">
+            <span class="pmvv-mid-icon">🎯</span>
+            <span class="pmvv-mid-label">Mission<small>使命</small></span>
+          </div>
+          <div class="pmvv-mid-text"><strong>非属人チャンネル運用</strong>で低コスト・高再現性の事業を構築し、利益率向上と節税を実現する</div>
         </div>
-        <div class="mvv-card-text"><strong>腹を抱えて笑える</strong><br>人と企業があふれる<br>世界をつくる</div>
+        <div class="pmvv-mid-card" style="--mc:#30b050">
+          <div class="pmvv-mid-head">
+            <span class="pmvv-mid-icon">🌍</span>
+            <span class="pmvv-mid-label">Vision<small>目指す世界</small></span>
+          </div>
+          <div class="pmvv-mid-text"><strong>腹を抱えて笑える</strong>人と企業があふれる世界をつくる</div>
+        </div>
       </div>
-      <div class="mvv-card" style="--mc:#7c5cfc" onclick="openPMVV()">
-        <div class="mvv-card-head">
-          <div class="mvv-card-icon">⚡</div>
-          <div class="mvv-card-label">Value<span>行動指針</span></div>
-        </div>
-        <div class="mvv-vlist">
-          <div class="mvv-vrow"><span class="mvv-vnum">1</span><span class="mvv-vtxt">慈愛と数字の責任を持つ</span></div>
-          <div class="mvv-vrow"><span class="mvv-vnum">2</span><span class="mvv-vtxt">Win-Win-Winで動く</span></div>
-          <div class="mvv-vrow"><span class="mvv-vnum">3</span><span class="mvv-vtxt">すべてを自責で考える</span></div>
+      <!-- Value：土台 -->
+      <div class="pmvv-base">
+        <div class="pmvv-base-label">⚡ VALUE｜行動指針</div>
+        <div class="pmvv-pillars">
+          <div class="pmvv-pillar"><span class="pmvv-pillar-num">1</span>慈愛と数字の責任を持つ</div>
+          <div class="pmvv-pillar"><span class="pmvv-pillar-num">2</span>Win-Win-Winで動く</div>
+          <div class="pmvv-pillar"><span class="pmvv-pillar-num">3</span>すべてを自責で考える</div>
         </div>
       </div>
     </div>
