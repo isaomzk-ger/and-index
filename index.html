@@ -1093,90 +1093,45 @@ body {
 }
 .org-card { position: relative; }
 
-/* ─── PMVV タブ切替 (top page) ─── */
-.pmvv-tab-wrap {
-  padding: 1.5rem 2.5rem .75rem;
+/* ─── MVV STRIP (top page) ─── */
+.mvv-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 1.75rem 2.5rem .5rem;
 }
-@media (max-width: 768px) { .pmvv-tab-wrap { padding: 1.2rem 1rem .5rem; } }
-
-.pmvv-tabs {
-  display: flex; gap: 6px; margin-bottom: 0;
-  border-bottom: 2px solid var(--border);
-  padding-bottom: 0;
+@media (max-width: 768px) {
+  .mvv-strip { grid-template-columns: 1fr; padding: 1.25rem 1rem .25rem; }
 }
-.pmvv-tab {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px; font-weight: 700;
-  padding: .55rem 1.4rem;
-  border: none; border-bottom: 3px solid transparent;
-  background: none; cursor: pointer; color: var(--text-tertiary);
-  transition: color .15s, border-color .15s;
-  margin-bottom: -2px; border-radius: 6px 6px 0 0;
-}
-.pmvv-tab:hover { color: var(--text-primary); background: rgba(0,0,0,.03); }
-.pmvv-tab.active { color: #1d1d1f; border-bottom-color: #1d1d1f; }
-
-.pmvv-panel {
+.mvv-card {
   background: var(--surface);
-  border: 1px solid var(--border); border-top: none;
-  border-radius: 0 0 16px 16px;
-  padding: 1.8rem 2rem 1.5rem;
-  min-height: 160px;
-  display: flex; flex-direction: column; justify-content: center;
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--mc, #7c5cfc);
+  border-radius: 18px;
+  padding: 1.6rem 1.8rem;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
 }
-.pmvv-panel.hidden { display: none; }
-
-.pmvv-panel-eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: .1em;
-  color: rgba(255,255,255,.45); margin-bottom: .7rem;
+.mvv-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
 }
-#pmvv-purpose {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%);
-  border-color: transparent;
+.mvv-card-label {
+  font-size: 14px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--mc, #7c5cfc);
+  margin-bottom: .85rem;
+  display: flex; align-items: center; gap: .45rem;
 }
-#pmvv-mission { border-top: 3px solid #0a84ff; }
-#pmvv-vision  { border-top: 3px solid #30b050; }
-#pmvv-value   { border-top: 3px solid #7c5cfc; }
-#pmvv-mission .pmvv-panel-eyebrow,
-#pmvv-vision  .pmvv-panel-eyebrow,
-#pmvv-value   .pmvv-panel-eyebrow { color: var(--text-secondary); }
-
-.pmvv-panel-main {
-  font-size: 22px; font-weight: 700; line-height: 1.7;
-  color: #fff; margin-bottom: 1.1rem;
+.mvv-card-text {
+  font-size: 17px; color: var(--text-primary);
+  line-height: 1.7; font-weight: 500;
 }
-#pmvv-mission .pmvv-panel-main,
-#pmvv-vision  .pmvv-panel-main,
-#pmvv-value   .pmvv-panel-main { color: var(--text-primary); }
-.pmvv-panel-main span { color: #a78bfa; }
-@media (max-width: 768px) { .pmvv-panel-main { font-size: 18px; } }
-
-.pmvv-panel-more {
-  align-self: flex-start;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 12px; font-weight: 600;
-  background: rgba(255,255,255,.12); color: rgba(255,255,255,.7);
-  border: 1px solid rgba(255,255,255,.2); border-radius: 20px;
-  padding: 5px 14px; cursor: pointer; transition: background .15s;
+.mvv-card-text strong { color: var(--text-primary); font-weight: 700; }
+@media (max-width: 768px) {
+  .mvv-card { padding: 1.3rem 1.4rem; }
+  .mvv-card-text { font-size: 15px; }
 }
-#pmvv-mission .pmvv-panel-more,
-#pmvv-vision  .pmvv-panel-more,
-#pmvv-value   .pmvv-panel-more {
-  background: var(--surface2); color: var(--text-secondary);
-  border-color: var(--border);
-}
-.pmvv-panel-more:hover { opacity: .8; }
-
-/* Value リスト */
-.pmvv-value-list-tab { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.1rem; }
-.pmvv-value-tab-row { display: flex; align-items: flex-start; gap: .75rem; }
-.pmvv-vtab-num {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: #7c5cfc; color: #fff; font-size: 15px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
-}
-.pmvv-vtab-txt { font-size: 16px; font-weight: 500; color: var(--text-primary); line-height: 1.6; }
-.pmvv-vtab-txt strong { color: #7c5cfc; font-weight: 800; }
 
 /* ─── ORG TREE ─── */
 .org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; }
@@ -1503,36 +1458,18 @@ body {
     </div>
 
     <!-- MVV STRIP -->
-    <div class="pmvv-tab-wrap" id="mvvStrip">
-      <div class="pmvv-tabs">
-        <button class="pmvv-tab active" onclick="switchPmvvTab('purpose',this)">Purpose</button>
-        <button class="pmvv-tab" onclick="switchPmvvTab('mission',this)">Mission</button>
-        <button class="pmvv-tab" onclick="switchPmvvTab('vision',this)">Vision</button>
-        <button class="pmvv-tab" onclick="switchPmvvTab('value',this)">Value</button>
+    <div class="mvv-strip" id="mvvStrip">
+      <div class="mvv-card" style="--mc:#0a84ff" onclick="openPMVV()">
+        <div class="mvv-card-label">🎯 Mission</div>
+        <div class="mvv-card-text"><strong>非属人チャンネル運用</strong>を軸に、低コスト・高再現性のオンライン事業を構築し、利益率向上と節税を同時に実現する</div>
       </div>
-      <div class="pmvv-panel" id="pmvv-purpose">
-        <div class="pmvv-panel-eyebrow">なぜ、and°は存在するのか</div>
-        <div class="pmvv-panel-main" style="color:#a78bfa">挑戦する企業が、<br><span>恐怖ではなく、安心を土台に</span><br>前へ進めるようにする</div>
-        <button class="pmvv-panel-more" onclick="openPMVV()">詳細を見る →</button>
+      <div class="mvv-card" style="--mc:#30b050" onclick="openPMVV()">
+        <div class="mvv-card-label">🌍 Vision</div>
+        <div class="mvv-card-text"><strong>腹を抱えて笑える</strong>人と企業があふれる世界をつくる</div>
       </div>
-      <div class="pmvv-panel hidden" id="pmvv-mission">
-        <div class="pmvv-panel-eyebrow" style="color:#0a84ff">🎯 使命</div>
-        <div class="pmvv-panel-main">YouTubeの<strong style="color:#0a84ff">非属人チャンネル運用</strong>を軸に、<br>低コスト・高再現性のオンライン事業を構築し、<br>利益率向上と節税を同時に実現する</div>
-        <button class="pmvv-panel-more" onclick="openPMVV()">詳細を見る →</button>
-      </div>
-      <div class="pmvv-panel hidden" id="pmvv-vision">
-        <div class="pmvv-panel-eyebrow" style="color:#30b050">🌍 目指す世界</div>
-        <div class="pmvv-panel-main"><strong style="color:#30b050">腹を抱えて笑える</strong>人と企業が<br>あふれる世界をつくる</div>
-        <button class="pmvv-panel-more" onclick="openPMVV()">詳細を見る →</button>
-      </div>
-      <div class="pmvv-panel hidden" id="pmvv-value">
-        <div class="pmvv-panel-eyebrow" style="color:#7c5cfc">⚡ 行動指針</div>
-        <div class="pmvv-value-list-tab">
-          <div class="pmvv-value-tab-row"><span class="pmvv-vtab-num">1</span><span class="pmvv-vtab-txt">クライアントに<strong>慈愛と数字の責任</strong>を持って行動する</span></div>
-          <div class="pmvv-value-tab-row"><span class="pmvv-vtab-num">2</span><span class="pmvv-vtab-txt"><strong>Win-Win-Win</strong>で動く</span></div>
-          <div class="pmvv-value-tab-row"><span class="pmvv-vtab-num">3</span><span class="pmvv-vtab-txt">すべてを<strong>自責</strong>で考える</span></div>
-        </div>
-        <button class="pmvv-panel-more" onclick="openPMVV()">詳細を見る →</button>
+      <div class="mvv-card" style="--mc:#7c5cfc" onclick="openPMVV()">
+        <div class="mvv-card-label">⚡ Value</div>
+        <div class="mvv-card-text">① 慈愛と数字の責任　② Win-Win-Win　③ すべてを自責で考える</div>
       </div>
     </div>
 
@@ -1705,21 +1642,6 @@ function filterTarget(target, el) {
 }
 
 render();
-
-// ─── PMVV TAB ───
-function switchPmvvTab(key, el) {
-  ['purpose','mission','vision','value'].forEach(k => {
-    document.getElementById('pmvv-'+k).classList.toggle('hidden', k !== key);
-  });
-  document.querySelectorAll('.pmvv-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  // タブのアクティブ色を要素カラーに合わせる
-  const colors = {purpose:'#1d1d1f', mission:'#0a84ff', vision:'#30b050', value:'#7c5cfc'};
-  document.querySelectorAll('.pmvv-tab').forEach(t => t.style.borderBottomColor = '');
-  el.style.borderBottomColor = colors[key];
-  el.style.color = colors[key];
-}
-
 
 // ─── ORG DATA ───
 // YouTube事業部チーム（エグゼクティブクリック展開型）
