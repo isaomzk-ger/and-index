@@ -1093,64 +1093,86 @@ body {
 }
 .org-card { position: relative; }
 
-/* ─── PMVV 同心円 (top page) ─── */
-.pmvv-top {
-  max-width: 1040px; margin: 0 auto;
-  padding: 1.75rem 2.5rem .5rem;
-  display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
-  justify-content: center; cursor: pointer;
+/* ─── PMVV Statement (top page) ─── */
+.pmvv-stmt {
+  padding: 1.5rem 2.5rem .75rem;
+  display: flex; flex-direction: column; gap: 16px;
 }
-@media (max-width: 768px) { .pmvv-top { padding: 1.25rem 1rem .25rem; gap: 1.5rem; } }
+@media (max-width: 768px) { .pmvv-stmt { padding: 1.2rem 1rem .5rem; } }
 
-/* 同心円 */
-.rings-diagram { flex-shrink: 0; transition: transform .2s; }
-.pmvv-top:hover .rings-diagram { transform: scale(1.02); }
-.ring {
-  border-radius: 50%;
+/* Purpose ステートメント */
+.stmt-purpose {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%);
+  border-radius: 20px; padding: 1.6rem 2rem;
+  cursor: pointer; position: relative;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 6px 24px rgba(15,52,96,.22);
+}
+.stmt-purpose:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(15,52,96,.3); }
+.stmt-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  color: rgba(255,255,255,.45); margin-bottom: .7rem;
+}
+.stmt-text {
+  font-size: 22px; font-weight: 800; color: #fff; line-height: 1.6;
+}
+.stmt-text span { color: #a78bfa; }
+.stmt-hint {
+  font-size: 11px; color: rgba(255,255,255,.3); margin-top: .8rem;
+}
+@media (max-width: 768px) { .stmt-text { font-size: 18px; } }
+
+/* Value 行動カード */
+.stmt-values {}
+.stmt-section-label {
+  font-size: 13px; font-weight: 800; color: var(--text-secondary);
+  letter-spacing: .05em; margin-bottom: 10px;
+}
+.stmt-value-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+@media (max-width: 768px) { .stmt-value-grid { grid-template-columns: 1fr; } }
+.stmt-value-card {
+  background: #fff; border: 1px solid var(--border);
+  border-top: 5px solid var(--vc, #888);
+  border-radius: 16px; padding: 1.2rem 1.3rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.stmt-value-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--vc, #888); color: #fff;
+  font-size: 18px; font-weight: 900;
   display: flex; align-items: center; justify-content: center;
-  position: relative;
+  margin-bottom: .85rem;
 }
-.ring-value  { width: 320px; height: 320px; background: #f0ecff; }
-.ring-vision { width: 244px; height: 244px; background: #e3f6e9; }
-.ring-mission{ width: 168px; height: 168px; background: #dceeff; }
-.ring-core {
-  width: 110px; height: 110px; border-radius: 50%;
-  background: linear-gradient(135deg, #1a1a2e, #0f3460);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: #fff; text-align: center;
-  box-shadow: 0 6px 20px rgba(15,52,96,.35);
+.stmt-value-action {
+  font-size: 18px; font-weight: 700; color: var(--text-primary);
+  line-height: 1.65; margin-bottom: .6rem;
 }
-.ring-core b { font-size: 16px; font-weight: 800; }
-.ring-core span { font-size: 10px; color: rgba(255,255,255,.6); margin-top: 2px; }
-.ring-band-label {
-  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
-  font-size: 11px; font-weight: 800; letter-spacing: .08em;
+.stmt-value-action strong { color: var(--vc, #888); }
+.stmt-value-sub {
+  font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+  letter-spacing: .03em;
 }
-@media (max-width: 768px) {
-  .ring-value  { width: 260px; height: 260px; }
-  .ring-vision { width: 198px; height: 198px; }
-  .ring-mission{ width: 138px; height: 138px; }
-  .ring-core   { width: 92px; height: 92px; }
-}
+@media (max-width: 768px) { .stmt-value-action { font-size: 16px; } }
 
-/* 凡例 */
-.rings-legend {
-  flex: 1; min-width: 280px; max-width: 560px;
-  display: flex; flex-direction: column; gap: 14px;
+/* Mission / Vision 文脈カード */
+.stmt-context {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
 }
-.legend-row { display: flex; gap: .8rem; align-items: flex-start; }
-.legend-dot {
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--lc, #888); margin-top: 4px; flex-shrink: 0;
+@media (max-width: 768px) { .stmt-context { grid-template-columns: 1fr; } }
+.stmt-ctx-card {
+  background: var(--surface2, #f5f7ff); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 1.2rem;
+  cursor: pointer; transition: background .15s;
 }
-.legend-body h4 {
-  font-size: 16px; font-weight: 800; color: var(--lc, #1d1d1f);
-  margin-bottom: 3px; display: flex; align-items: baseline; gap: .4rem;
+.stmt-ctx-card:hover { background: #eef1ff; }
+.stmt-ctx-label {
+  font-size: 12px; font-weight: 800; letter-spacing: .04em; margin-bottom: .45rem;
 }
-.legend-body h4 small { font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
-.legend-body p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; font-weight: 400; }
-.legend-body p strong { color: var(--text-primary); font-weight: 700; }
-.legend-body p em { color: #a78bfa; font-style: normal; font-weight: 600; }
+.stmt-ctx-text {
+  font-size: 14px; font-weight: 500; color: var(--text-primary); line-height: 1.6;
+}
 
 /* ─── ORG TREE ─── */
 .org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; }
@@ -1477,51 +1499,43 @@ body {
     </div>
 
     <!-- MVV STRIP -->
-    <div class="pmvv-top" id="mvvStrip" onclick="openPMVV()" title="クリックで詳細（PMVV）を表示">
-      <!-- 同心円 -->
-      <div class="rings-diagram">
-        <div class="ring ring-value">
-          <span class="ring-band-label" style="color:#7c5cfc">VALUE</span>
-          <div class="ring ring-vision">
-            <span class="ring-band-label" style="color:#30b050">VISION</span>
-            <div class="ring ring-mission">
-              <span class="ring-band-label" style="color:#0a84ff">MISSION</span>
-              <div class="ring-core">
-                <b>Purpose</b><span>存在意義</span>
-              </div>
-            </div>
+    <div class="pmvv-stmt" id="mvvStrip">
+      <!-- Purpose：感情に刺さるステートメント -->
+      <div class="stmt-purpose" onclick="openPMVV()">
+        <div class="stmt-eyebrow">なぜ、and°は存在するのか</div>
+        <div class="stmt-text">会社が<span>「不安」じゃなく「安心」を土台に</span>、思いきって挑戦できるようにする</div>
+        <div class="stmt-hint">↗ クリックで詳細（PMVV）</div>
+      </div>
+      <!-- Value：行動カード（メイン） -->
+      <div class="stmt-values">
+        <div class="stmt-section-label">⚡ 毎日の行動指針</div>
+        <div class="stmt-value-grid">
+          <div class="stmt-value-card" style="--vc:#0a84ff">
+            <div class="stmt-value-num">1</div>
+            <div class="stmt-value-action">相手を<strong>本気で大事に</strong>して、<br>数字にも責任を持とう</div>
+            <div class="stmt-value-sub">慈愛と数字の責任</div>
+          </div>
+          <div class="stmt-value-card" style="--vc:#30b050">
+            <div class="stmt-value-num">2</div>
+            <div class="stmt-value-action">自分・仲間・会社、<br><strong>全員が得する道</strong>を選ぼう</div>
+            <div class="stmt-value-sub">Win-Win-Win</div>
+          </div>
+          <div class="stmt-value-card" style="--vc:#7c5cfc">
+            <div class="stmt-value-num">3</div>
+            <div class="stmt-value-action">人のせいにしない。<br><strong>自分にできること</strong>を考えよう</div>
+            <div class="stmt-value-sub">すべてを自責で考える</div>
           </div>
         </div>
       </div>
-      <!-- 凡例 -->
-      <div class="rings-legend">
-        <div class="legend-row" style="--lc:#1a1a2e">
-          <span class="legend-dot"></span>
-          <div class="legend-body">
-            <h4>Purpose <small>存在意義</small></h4>
-            <p>挑戦する企業が、<em>恐怖ではなく安心を土台に</em>前へ進めるようにする</p>
-          </div>
+      <!-- Mission / Vision：文脈カード -->
+      <div class="stmt-context">
+        <div class="stmt-ctx-card" onclick="openPMVV()">
+          <div class="stmt-ctx-label" style="color:#0a84ff">🎯 何をするか（Mission）</div>
+          <div class="stmt-ctx-text">特定の人に頼りすぎないYouTubeのしくみで、ムダなくまわる事業をつくる</div>
         </div>
-        <div class="legend-row" style="--lc:#0a84ff">
-          <span class="legend-dot"></span>
-          <div class="legend-body">
-            <h4>Mission <small>使命</small></h4>
-            <p><strong>非属人チャンネル運用</strong>で低コスト・高再現性の事業を構築し、利益率向上と節税を実現する</p>
-          </div>
-        </div>
-        <div class="legend-row" style="--lc:#30b050">
-          <span class="legend-dot"></span>
-          <div class="legend-body">
-            <h4>Vision <small>目指す世界</small></h4>
-            <p><strong>腹を抱えて笑える</strong>人と企業があふれる世界をつくる</p>
-          </div>
-        </div>
-        <div class="legend-row" style="--lc:#7c5cfc">
-          <span class="legend-dot"></span>
-          <div class="legend-body">
-            <h4>Value <small>行動指針</small></h4>
-            <p>① 慈愛と数字の責任　② Win-Win-Win　③ すべてを自責で考える</p>
-          </div>
+        <div class="stmt-ctx-card" onclick="openPMVV()">
+          <div class="stmt-ctx-label" style="color:#30b050">🌍 目指す世界（Vision）</div>
+          <div class="stmt-ctx-text">お腹を抱えて笑える人と企業があふれる世界をつくる</div>
         </div>
       </div>
     </div>
