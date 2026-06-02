@@ -131,7 +131,7 @@ body {
 /* ─── HERO ─── */
 .hero {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-  padding: 2.5rem 2.5rem 2rem;
+  padding: 1.5rem 2.5rem 1.25rem;
   position: relative;
   overflow: hidden;
 }
@@ -164,33 +164,33 @@ body {
 }
 
 .hero-title {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -.02em;
-  margin-bottom: .4rem;
+  margin-bottom: .3rem;
   line-height: 1.2;
 }
 
 .hero-sub {
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255,255,255,0.5);
   font-weight: 300;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .hero-card {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  padding: 1.2rem 1.5rem;
+  border-radius: 14px;
+  padding: .8rem 1.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   text-decoration: none;
   transition: background .2s, border-color .2s, transform .2s;
   backdrop-filter: blur(10px);
-  max-width: 600px;
+  max-width: 520px;
 }
 
 .hero-card:hover {
@@ -202,11 +202,11 @@ body {
 .hero-card-left { display: flex; align-items: center; gap: 1rem; }
 
 .hero-card-icon {
-  width: 48px; height: 48px;
+  width: 38px; height: 38px;
   background: linear-gradient(135deg, #ff4444, #ff6b35);
-  border-radius: 14px;
+  border-radius: 11px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .hero-card-label {
@@ -217,7 +217,7 @@ body {
 }
 
 .hero-card-name {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   color: #fff;
   letter-spacing: -.01em;
@@ -1097,36 +1097,41 @@ body {
 .mvv-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding: 1.25rem 2.5rem 0;
+  gap: 16px;
+  padding: 1.75rem 2.5rem .5rem;
 }
 @media (max-width: 768px) {
-  .mvv-strip { grid-template-columns: 1fr; padding: 1rem 1rem 0; }
+  .mvv-strip { grid-template-columns: 1fr; padding: 1.25rem 1rem .25rem; }
 }
 .mvv-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--mc, #7c5cfc);
-  border-radius: 14px;
-  padding: 1rem 1.2rem;
+  border-left: 6px solid var(--mc, #7c5cfc);
+  border-radius: 18px;
+  padding: 1.6rem 1.8rem;
   cursor: pointer;
   transition: transform .15s, box-shadow .15s, border-color .15s;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
 }
 .mvv-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
 }
 .mvv-card-label {
-  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  font-size: 14px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: var(--mc, #7c5cfc);
-  margin-bottom: .45rem;
-  display: flex; align-items: center; gap: .35rem;
+  margin-bottom: .85rem;
+  display: flex; align-items: center; gap: .45rem;
 }
 .mvv-card-text {
-  font-size: 13px; color: var(--text-secondary);
-  line-height: 1.65; font-weight: 400;
+  font-size: 17px; color: var(--text-primary);
+  line-height: 1.7; font-weight: 500;
 }
-.mvv-card-text strong { color: var(--text-primary); font-weight: 600; }
+.mvv-card-text strong { color: var(--text-primary); font-weight: 700; }
+@media (max-width: 768px) {
+  .mvv-card { padding: 1.3rem 1.4rem; }
+  .mvv-card-text { font-size: 15px; }
+}
 
 /* ─── ORG TREE ─── */
 .org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; }
@@ -1177,6 +1182,14 @@ body {
   background: var(--nc, #888); border: none; color: #fff;
   cursor: default;
 }
+.tree-node.lead {
+  background: #fff; border: 2px solid var(--nc, #30b050);
+  border-top: 4px solid var(--nc, #30b050);
+  box-shadow: 0 4px 14px rgba(0,0,0,.1);
+  padding: .7rem 1.2rem;
+}
+.tree-node.lead .tree-node-name { font-size: 14px; }
+.tree-node.lead .tree-node-role { color: var(--nc, #30b050); font-weight: 600; }
 .tree-node-name { font-size: 13px; font-weight: 600; color: inherit; white-space: nowrap; }
 .tree-node.president .tree-node-name { font-size: 15px; }
 .tree-node-role {
@@ -1615,21 +1628,28 @@ render();
 const ytTeams = [
   {
     exec: { name: "長尾", role: "エグゼクティブD", color: "#f59e0b" },
-    members: ["猪澤", "吉永", "石川千洋", "半澤"]
+    members: ["猪澤", "吉永", "松田", "古川", "近藤", "國井", "高橋優哉"]
   },
   {
     exec: { name: "新井", role: "エグゼクティブD", color: "#0a84ff" },
-    members: ["小松原", "田坂", "里澤", "船附", "吉田 昂将"]
+    members: ["小松原", "田坂", "里澤", "船附", "吉田 昂将", "石川", "米田"]
   },
   {
-    exec: { name: "小峯", role: "エグゼクティブD / 事業部統括部長", color: "#30b050" },
-    members: ["都田", "矢内", "本田 柊斗", "吉見 祐美"]
+    exec: { name: "小峯", role: "事業部統括部長 兼 エグゼクティブD", color: "#30b050" },
+    members: ["矢内", "本田 柊斗", "吉見 祐美", "森脇", "高桑", "横山", "星"]
   },
   {
     exec: { name: "吉見 愛莉", role: "エグゼクティブD", color: "#7c5cfc" },
     members: ["浅岡 八千代", "中嶋", "高橋さやか", "山田ゆか", "坂井 旭夏"]
   }
 ];
+
+// YouTube事業部 海外部門（既存チームとは独立）
+const ytOverseas = {
+  name: "海外部門",
+  color: "#06b6d4",
+  members: ["マリーヌ"]
+};
 
 let expandedExec = null;
 
@@ -1699,28 +1719,37 @@ const allMembers = [
   { name: "望月和義", dept: "経営", role: "CFO / 外部役員", level: "exec" },
   { name: "本田", dept: "人事部", role: "人事部長", level: "exec" },
   { name: "新谷", dept: "CS事業部", role: "CS事業部長", level: "exec" },
+  { name: "小峯", dept: "YouTube事業部", role: "事業部統括部長 兼 エグゼクティブD", level: "exec" },
   { name: "長尾", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
   { name: "猪澤", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
   { name: "吉永", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
-  { name: "石川千洋", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
-  { name: "半澤", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "松田", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "古川", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "近藤", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "國井", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
+  { name: "高橋優哉", dept: "YouTube事業部 / 長尾チーム", role: "ディレクター", level: "dir" },
   { name: "新井", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
   { name: "小松原", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
   { name: "田坂", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
   { name: "里澤", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
   { name: "船附", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
   { name: "吉田 昂将", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
-  { name: "小峯", dept: "YouTube事業部", role: "エグゼクティブD / 事業部統括部長", level: "exec" },
-  { name: "都田", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "石川", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
+  { name: "米田", dept: "YouTube事業部 / 新井チーム", role: "ディレクター", level: "dir" },
   { name: "矢内", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
   { name: "本田 柊斗", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
   { name: "吉見 祐美", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "森脇", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "高桑", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "横山", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
+  { name: "星", dept: "YouTube事業部 / 小峯チーム", role: "ディレクター", level: "dir" },
   { name: "吉見 愛莉", dept: "YouTube事業部", role: "エグゼクティブD", level: "exec" },
   { name: "浅岡 八千代", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "中嶋", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "高橋さやか", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "山田ゆか", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
   { name: "坂井 旭夏", dept: "YouTube事業部 / 吉見チーム", role: "ディレクター", level: "dir" },
+  { name: "マリーヌ", dept: "YouTube事業部 / 海外部門", role: "ディレクター", level: "dir" },
   { name: "鹿又", dept: "品質管理部", role: "クリエイティブチーフD", level: "exec" },
   { name: "原", dept: "品質管理部", role: "クリエイティブD", level: "exec" },
   { name: "古澤", dept: "品質管理部", role: "クリエイティブD", level: "exec" },
@@ -1735,24 +1764,45 @@ function buildOverviewTree() {
   const d = orgData.overview;
   return {
     name: d.top.name, role: d.top.role, color: "#1d1d1f", president: true,
-    children: d.depts.map(dept => ({
-      name: dept.name, role: "", color: dept.color, isDept: true,
-      children: dept.members.map(m => {
-        const team = (dept.name === "YouTube事業部")
-          ? ytTeams.find(t => t.exec.name === m.name) : null;
-        return {
-          name: m.name, role: m.role, color: dept.color,
-          children: team ? team.members.map(mm => ({
-            name: mm, role: "ディレクター", color: dept.color
-          })) : []
-        };
-      })
-    }))
+    children: d.depts.map(dept => {
+      if (dept.name === "YouTube事業部") return buildYTDeptNode(dept.color);
+      return {
+        name: dept.name, role: "", color: dept.color, isDept: true,
+        children: dept.members.map(m => ({
+          name: m.name, role: m.role, color: dept.color, children: []
+        }))
+      };
+    })
+  };
+}
+
+// YouTube事業部：小峯を統括部長として上位に、海外部門を独立ブランチに
+function buildYTDeptNode(color) {
+  const lead = ytTeams.find(t => t.exec.name === "小峯");
+  const others = ytTeams.filter(t => t.exec.name !== "小峯");
+  const execNodes = others.map(t => ({
+    name: t.exec.name, role: t.exec.role, color,
+    children: t.members.map(mm => ({ name: mm, role: "ディレクター", color }))
+  }));
+  const leadDirectors = lead.members.map(mm => ({ name: mm, role: "ディレクター", color }));
+  const overseasNode = {
+    name: ytOverseas.name, role: "", color: ytOverseas.color, isDept: true,
+    children: ytOverseas.members.map(mm => ({ name: mm, role: "ディレクター", color: ytOverseas.color }))
+  };
+  return {
+    name: "YouTube事業部", role: "", color, isDept: true,
+    children: [
+      {
+        name: lead.exec.name, role: lead.exec.role, color, lead: true,
+        children: [...execNodes, ...leadDirectors]
+      },
+      overseasNode
+    ]
   };
 }
 
 function renderTreeNode(node) {
-  const cls = node.president ? "president" : (node.isDept ? "dept" : "");
+  const cls = node.president ? "president" : (node.isDept ? "dept" : (node.lead ? "lead" : ""));
   let nodeHtml = `<div class="tree-node ${cls}" style="--nc:${node.color}">
     <div class="tree-node-name">${node.name}</div>
     ${node.role ? `<div class="tree-node-role">${node.role}</div>` : ""}
@@ -1863,6 +1913,24 @@ function renderOrgBody(key) {
           </div>` : ''}
         </div>`;
     });
+    // 海外部門（既存チームとは独立）
+    const oc = ytOverseas.color;
+    html += `
+      <div style="margin-top:1.25rem;margin-bottom:.5rem;font-size:11px;font-weight:600;letter-spacing:.08em;color:#aeaeb2;text-transform:uppercase">独立部門</div>
+      <div style="border:1px solid ${oc};border-radius:14px;overflow:hidden">
+        <div style="background:${oc};padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px">🌐</div>
+          <div style="font-size:14px;font-weight:600;color:#fff">${ytOverseas.name}</div>
+          <span style="margin-left:auto;font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.2);color:#fff">${ytOverseas.members.length}名</span>
+        </div>
+        <div style="background:#fafafa;padding:.75rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px">
+          ${ytOverseas.members.map(m => `
+            <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:10px;padding:.65rem .85rem">
+              <div style="font-size:12px;font-weight:500;color:#1d1d1f">${m}</div>
+              <div style="font-size:10px;color:#aeaeb2;margin-top:2px">ディレクター</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
     body.innerHTML = html;
     return;
   }
