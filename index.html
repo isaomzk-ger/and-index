@@ -131,9 +131,12 @@ body {
 /* ─── HERO ─── */
 .hero {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-  padding: 1.5rem 2.5rem 1.25rem;
+  margin: .25rem 2.5rem 1rem;
+  padding: 1.4rem 1.8rem;
+  border-radius: 18px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 6px 22px rgba(15,52,96,.18);
 }
 
 .hero::before {
@@ -406,8 +409,11 @@ body {
   .main { margin-left: 0; }
 
   .hero {
-    padding: 3.5rem 1.2rem 1.5rem;
+    margin: .25rem 1rem 1rem;
+    padding: 1.3rem 1.3rem 1.4rem;
   }
+  /* モバイル：ハンバーガー分の余白をMVV上部に確保 */
+  .mvv-wrap { padding-top: 3.25rem; }
 
   .hero-title { font-size: 20px; }
   .hero-sub { font-size: 12px; }
