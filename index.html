@@ -1092,6 +1092,99 @@ body {
   opacity: .5;
 }
 .org-card { position: relative; }
+
+/* ─── MVV STRIP (top page) ─── */
+.mvv-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 1.25rem 2.5rem 0;
+}
+@media (max-width: 768px) {
+  .mvv-strip { grid-template-columns: 1fr; padding: 1rem 1rem 0; }
+}
+.mvv-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--mc, #7c5cfc);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.mvv-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+}
+.mvv-card-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--mc, #7c5cfc);
+  margin-bottom: .45rem;
+  display: flex; align-items: center; gap: .35rem;
+}
+.mvv-card-text {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.65; font-weight: 400;
+}
+.mvv-card-text strong { color: var(--text-primary); font-weight: 600; }
+
+/* ─── ORG TREE ─── */
+.org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; }
+.org-tree-hint { font-size: 12px; color: #aeaeb2; margin-bottom: 1rem; }
+.tree { display: inline-block; min-width: 100%; text-align: center; padding-top: .5rem; }
+.tree ul {
+  display: flex; justify-content: center;
+  padding-top: 20px; position: relative;
+  transition: all .3s;
+}
+.tree li {
+  list-style: none; text-align: center;
+  position: relative; padding: 20px 6px 0;
+}
+/* 横の連結線 */
+.tree li::before, .tree li::after {
+  content: ''; position: absolute; top: 0; right: 50%;
+  border-top: 2px solid #d0d0d6; width: 50%; height: 20px;
+}
+.tree li::after { right: auto; left: 50%; border-left: 2px solid #d0d0d6; }
+.tree li:only-child::after, .tree li:only-child::before { display: none; }
+.tree li:only-child { padding-top: 0; }
+.tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+.tree li:last-child::before { border-right: 2px solid #d0d0d6; border-radius: 0 6px 0 0; }
+.tree li:first-child::after { border-radius: 6px 0 0 0; }
+/* 親から下への縦線 */
+.tree ul ul::before {
+  content: ''; position: absolute; top: 0; left: 50%;
+  border-left: 2px solid #d0d0d6; width: 0; height: 20px;
+}
+.tree-node {
+  display: inline-block;
+  background: #fff; border: 1px solid rgba(0,0,0,.08);
+  border-top: 3px solid var(--nc, #888);
+  border-radius: 12px; padding: .55rem .9rem;
+  min-width: 96px; box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  transition: transform .15s, box-shadow .15s;
+}
+.tree li:hover > .tree-node {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.1);
+}
+.tree-node.president {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  border: none; color: #fff; padding: .75rem 1.4rem;
+}
+.tree-node.dept {
+  background: var(--nc, #888); border: none; color: #fff;
+  cursor: default;
+}
+.tree-node-name { font-size: 13px; font-weight: 600; color: inherit; white-space: nowrap; }
+.tree-node.president .tree-node-name { font-size: 15px; }
+.tree-node-role {
+  font-size: 10px; margin-top: 2px; line-height: 1.3;
+  color: rgba(110,110,115,.9); white-space: nowrap;
+}
+.tree-node.president .tree-node-role,
+.tree-node.dept .tree-node-role { color: rgba(255,255,255,.7); }
 </style>
 </head>
 <body>
@@ -1331,6 +1424,22 @@ body {
       </a>
     </div>
 
+    <!-- MVV STRIP -->
+    <div class="mvv-strip" id="mvvStrip">
+      <div class="mvv-card" style="--mc:#0a84ff" onclick="openPMVV()">
+        <div class="mvv-card-label">🎯 Mission</div>
+        <div class="mvv-card-text"><strong>非属人チャンネル運用</strong>を軸に、低コスト・高再現性のオンライン事業を構築し、利益率向上と節税を同時に実現する</div>
+      </div>
+      <div class="mvv-card" style="--mc:#30b050" onclick="openPMVV()">
+        <div class="mvv-card-label">🌍 Vision</div>
+        <div class="mvv-card-text"><strong>腹を抱えて笑える</strong>人と企業があふれる世界をつくる</div>
+      </div>
+      <div class="mvv-card" style="--mc:#7c5cfc" onclick="openPMVV()">
+        <div class="mvv-card-label">⚡ Value</div>
+        <div class="mvv-card-text">① 慈愛と数字の責任　② Win-Win-Win　③ すべてを自責で考える</div>
+      </div>
+    </div>
+
     <!-- CONTENT -->
     <div class="content" id="content"></div>
 
@@ -1483,7 +1592,9 @@ function filterCat(cat, el) {
   currentTarget = "all";
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   el.classList.add("active");
-  document.getElementById("hero").style.display = cat === "all" ? "" : "none";
+  const show = cat === "all";
+  document.getElementById("hero").style.display = show ? "" : "none";
+  document.getElementById("mvvStrip").style.display = show ? "" : "none";
   render();
 }
 
@@ -1493,6 +1604,7 @@ function filterTarget(target, el) {
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   el.classList.add("active");
   document.getElementById("hero").style.display = "none";
+  document.getElementById("mvvStrip").style.display = "none";
   render();
 }
 
@@ -1618,6 +1730,45 @@ const allMembers = [
 
 let currentOrgTab = "overview";
 
+// 全体概要をツリー構造に変換
+function buildOverviewTree() {
+  const d = orgData.overview;
+  return {
+    name: d.top.name, role: d.top.role, color: "#1d1d1f", president: true,
+    children: d.depts.map(dept => ({
+      name: dept.name, role: "", color: dept.color, isDept: true,
+      children: dept.members.map(m => {
+        const team = (dept.name === "YouTube事業部")
+          ? ytTeams.find(t => t.exec.name === m.name) : null;
+        return {
+          name: m.name, role: m.role, color: dept.color,
+          children: team ? team.members.map(mm => ({
+            name: mm, role: "ディレクター", color: dept.color
+          })) : []
+        };
+      })
+    }))
+  };
+}
+
+function renderTreeNode(node) {
+  const cls = node.president ? "president" : (node.isDept ? "dept" : "");
+  let nodeHtml = `<div class="tree-node ${cls}" style="--nc:${node.color}">
+    <div class="tree-node-name">${node.name}</div>
+    ${node.role ? `<div class="tree-node-role">${node.role}</div>` : ""}
+  </div>`;
+  if (node.children && node.children.length) {
+    nodeHtml += `<ul>${node.children.map(c => `<li>${renderTreeNode(c)}</li>`).join("")}</ul>`;
+  }
+  return nodeHtml;
+}
+
+function renderOrgTree() {
+  const root = buildOverviewTree();
+  return `<div class="org-tree-hint">📐 全社の繋がりをツリーで表示。横にスクロールできます。</div>
+    <div class="org-tree-scroll"><div class="tree"><ul><li>${renderTreeNode(root)}</li></ul></div></div>`;
+}
+
 function openOrg() {
   document.getElementById("orgModal").classList.add("open");
   document.getElementById("orgOverlay").classList.add("open");
@@ -1653,6 +1804,14 @@ function renderOrgBody(key) {
   const dept = orgData[key];
   const body = document.getElementById("orgBody");
   let html = '';
+
+  // 全体概要：トーナメント型ツリー
+  if (key === "overview") {
+    body.innerHTML = renderOrgTree();
+    const sc = body.querySelector(".org-tree-scroll");
+    if (sc) sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2;
+    return;
+  }
 
   // YouTube事業部：エグゼクティブ展開型
   if (key === "yt") {
