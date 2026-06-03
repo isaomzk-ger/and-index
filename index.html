@@ -1365,6 +1365,46 @@ body {
     <span class="lpi-arrow">→</span>
   </a>
 </div>
+<!-- FORMATS POPUP -->
+<div class="link-popup-overlay" id="fmtOverlay" onclick="closeFormats()"></div>
+<div class="link-popup" id="fmtPopup">
+  <div class="link-popup-header">
+    <div class="link-popup-title">📋 各種フォーマット</div>
+    <button class="link-popup-close" onclick="closeFormats()">✕</button>
+  </div>
+  <a class="link-popup-item" href="https://docs.google.com/spreadsheets/d/1vb7AkFgJi9R9Yoxs99EAY0w59fNEAkCdKfZnPb0V3GE/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="lpi-icon">✅</span>
+    <span class="lpi-body">
+      <span class="lpi-name">企画・サムネチェックシート</span>
+      <span class="lpi-sub">企画・サムネイルのチェックに使用</span>
+    </span>
+    <span class="lpi-arrow">→</span>
+  </a>
+  <a class="link-popup-item" href="https://docs.google.com/document/d/1y7B5NlebOabBMuTt4CAqiShLYb7AF3MAFOCBLHVh6Nc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="lpi-icon">📄</span>
+    <span class="lpi-body">
+      <span class="lpi-name">編集者共有マニュアル</span>
+      <span class="lpi-sub">編集者へ共有するマニュアル</span>
+    </span>
+    <span class="lpi-arrow">→</span>
+  </a>
+  <a class="link-popup-item" href="https://docs.google.com/spreadsheets/d/1FjNk4-uKX9JIrY-M04T6rlMVEQuLvSG0906q7-QCwbs/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="lpi-icon">📈</span>
+    <span class="lpi-body">
+      <span class="lpi-name">チャンネル進捗管理</span>
+      <span class="lpi-sub">チャンネルごとの進捗を管理</span>
+    </span>
+    <span class="lpi-arrow">→</span>
+  </a>
+  <a class="link-popup-item" href="https://docs.google.com/spreadsheets/d/10ag5_cN_eqywOvizU-hJz0yUfzMHm3_4XV6SiuU3Agk/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="lpi-icon">🔍</span>
+    <span class="lpi-body">
+      <span class="lpi-name">リサーチシート</span>
+      <span class="lpi-sub">企画リサーチ用シート</span>
+    </span>
+    <span class="lpi-arrow">→</span>
+  </a>
+</div>
 <!-- TEAM POPUP -->
 <div class="team-popup-overlay" id="teamPopupOverlay" onclick="closeTeamPopup()"></div>
 <div class="team-popup" id="teamPopup">
@@ -1654,8 +1694,7 @@ const data = [
   {cat:"学習・育成",name:"レポート作成マニュアル動画",desc:"週次レポートの作成手順を解説した動画マニュアル。",target:"ディレクター",url:"#",icon:"🎥",action:"openVideo"},
   {cat:"学習・育成",name:"編集者ガイド",desc:"編集者向けのガイドライン・素材・指示書をまとめたドライブ。",target:"ディレクター",url:"https://drive.google.com/drive/folders/19qOMNNM7_tPDfP3g05LJIhIl85xLuoV2?usp=sharing",icon:"✂️"},
   {cat:"学習・育成",name:"Premiere Proテンプレート作成マニュアル",desc:"Premiere Proのテンプレート作成手順をまとめたドキュメント。",target:"ディレクター",url:"https://docs.google.com/document/d/18aSJqtPgePNaoNg-n6JXFt3wxgqkq0sM560nTL58s7I/edit?usp=sharing",icon:"🎞️"},
-  {cat:"業務ツール",name:"各種フォーマット",desc:"リサーチシート・編集者管理シートなどの雛形テンプレート。コピーして使用すること。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/1NIqehhZkdNUUJlnEdwT97k2fmiGWx84d/edit?usp=sharing&ouid=115514133484299940477&rtpof=true&sd=true",icon:"📋"},
-  {cat:"業務ツール",name:"サムネ・企画チェックシート",desc:"サムネイル・企画チェック時に使用するシート。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/1vb7AkFgJi9R9Yoxs99EAY0w59fNEAkCdKfZnPb0V3GE/edit?usp=sharing",icon:"✅"},
+  {cat:"業務ツール",name:"各種フォーマット",desc:"チェックシート・マニュアル・管理表などはこちら。",target:"ディレクター",url:"#",icon:"📋",action:"openFormats"},
   {cat:"業務ツール",name:"ディレクター週次報告シート",desc:"毎週日曜提出。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/1PAE0s5j67H-I_J521aYVfkQ_8IxSjqf6hYCzpETmo34/edit?gid=1325085979#gid=1325085979",icon:"📊"},
   {cat:"業務ツール",name:"オンボーディング",desc:"オンボーディング表・手順書はこちら。",target:"ディレクター",url:"#",icon:"🗓️",action:"openOnboarding"},
 ];
@@ -1722,6 +1761,9 @@ function render() {
         } else if (item.action === "openOnboarding") {
           a.href = "#";
           a.onclick = (e) => { e.preventDefault(); openOnboarding(); };
+        } else if (item.action === "openFormats") {
+          a.href = "#";
+          a.onclick = (e) => { e.preventDefault(); openFormats(); };
         } else {
           a.href = item.url;
           a.target = "_blank";
@@ -2452,6 +2494,15 @@ function openOnboarding() {
 function closeOnboarding() {
   document.getElementById("onbPopup").classList.remove("open");
   document.getElementById("onbOverlay").classList.remove("open");
+}
+
+function openFormats() {
+  document.getElementById("fmtPopup").classList.add("open");
+  document.getElementById("fmtOverlay").classList.add("open");
+}
+function closeFormats() {
+  document.getElementById("fmtPopup").classList.remove("open");
+  document.getElementById("fmtOverlay").classList.remove("open");
 }
 
 function openPMVV() {
