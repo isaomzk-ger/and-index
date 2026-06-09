@@ -1411,6 +1411,23 @@ body {
     </span>
     <span class="lpi-arrow">→</span>
   </a>
+  <a class="link-popup-item" href="https://drive.google.com/drive/folders/13wQOlvRUMphKjok9S85Y6kEUPyu88ezf?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="lpi-icon">⚙️</span>
+    <span class="lpi-body">
+      <span class="lpi-name">編集自動化プラグイン</span>
+      <span class="lpi-sub">編集を自動化するプラグイン一式</span>
+    </span>
+    <span class="lpi-arrow">→</span>
+  </a>
+</div>
+<!-- MEETING POPUP -->
+<div class="link-popup-overlay" id="mtgOverlay" onclick="closeMeeting()"></div>
+<div class="link-popup" id="mtgPopup">
+  <div class="link-popup-header">
+    <div class="link-popup-title">📅 ミーティングリンク集</div>
+    <button class="link-popup-close" onclick="closeMeeting()">✕</button>
+  </div>
+  <div id="mtgBody"></div>
 </div>
 <!-- TEAM POPUP -->
 <div class="team-popup-overlay" id="teamPopupOverlay" onclick="closeTeamPopup()"></div>
@@ -2457,31 +2474,24 @@ const meetingData = [
 ];
 
 function openMeeting() {
-  document.getElementById("meetingModal").classList.add("open");
-  document.getElementById("meetingOverlay").classList.add("open");
-  const body = document.getElementById("meetingBody");
+  const body = document.getElementById("mtgBody");
   body.innerHTML = meetingData.map(m => `
-    <div class="meeting-card">
-      <div class="meeting-card-left">
-        <div class="meeting-card-icon">🎥</div>
-        <div>
-          <div class="meeting-card-name">${m.name}</div>
-          <div class="meeting-card-meta">
-            ${m.day} ${m.time}
-            <span class="meeting-card-badge">${m.target}</span>
-          </div>
-        </div>
-      </div>
-      <a class="meeting-join-btn" href="${m.url}" target="_blank" rel="noopener noreferrer">
-        参加 →
-      </a>
-    </div>
+    <a class="link-popup-item" href="${m.url}" target="_blank" rel="noopener noreferrer">
+      <span class="lpi-icon">🎥</span>
+      <span class="lpi-body">
+        <span class="lpi-name">${m.name}</span>
+        <span class="lpi-sub">${m.day} ${m.time} ・ ${m.target}</span>
+      </span>
+      <span class="lpi-arrow">→</span>
+    </a>
   `).join('');
+  document.getElementById("mtgPopup").classList.add("open");
+  document.getElementById("mtgOverlay").classList.add("open");
 }
 
 function closeMeeting() {
-  document.getElementById("meetingModal").classList.remove("open");
-  document.getElementById("meetingOverlay").classList.remove("open");
+  document.getElementById("mtgPopup").classList.remove("open");
+  document.getElementById("mtgOverlay").classList.remove("open");
 }
 
 function openVideo() {
