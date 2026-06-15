@@ -26,6 +26,7 @@
   --c-info: #29ABE2;
   --c-learn: #10b981;
   --c-tool: #f59e0b;
+  --c-preset: #ec4899;
 }
 
 body {
@@ -1339,9 +1340,74 @@ body {
 }
 .tree-node.president .tree-node-role,
 .tree-node.dept .tree-node-role { color: rgba(255,255,255,.7); }
+
+/* ─── PASSWORD GATE ─── */
+.gate {
+  position: fixed; inset: 0; z-index: 2000;
+  background: linear-gradient(160deg, #f7fafd 0%, #eef4fb 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.gate-box {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 20px; padding: 2.5rem 2.2rem;
+  width: min(360px, 90vw); text-align: center;
+  box-shadow: 0 20px 60px rgba(15,52,96,.12);
+}
+.gate-logo { width: 130px; max-width: 60%; display: block; margin: 0 auto 1.4rem; }
+.gate-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 1.2rem; }
+.gate-input {
+  width: 100%; box-sizing: border-box;
+  font-size: 18px; text-align: center; letter-spacing: .3em;
+  padding: .75rem 1rem; border: 1.5px solid var(--border);
+  border-radius: 12px; outline: none; transition: border-color .15s;
+  font-family: inherit;
+}
+.gate-input:focus { border-color: #29ABE2; }
+.gate-btn {
+  margin-top: 1rem; width: 100%;
+  background: linear-gradient(135deg, #29ABE2 0%, #1577B8 100%);
+  color: #fff; border: none; border-radius: 12px;
+  padding: .8rem; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer; transition: opacity .15s;
+}
+.gate-btn:hover { opacity: .9; }
+.gate-err { color: #E60012; font-size: 12px; font-weight: 600; margin-top: .8rem; min-height: 16px; }
 </style>
 </head>
 <body>
+
+<!-- PASSWORD GATE -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <img src="logo.png" alt="and°" class="gate-logo">
+    <div class="gate-title">パスワードを入力してください</div>
+    <input id="gateInput" class="gate-input" type="password" inputmode="numeric" placeholder="••••" autocomplete="off" onkeydown="if(event.key==='Enter')checkGate()">
+    <button class="gate-btn" onclick="checkGate()">開く</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+<script>
+function checkGate() {
+  var v = document.getElementById('gateInput').value;
+  if (v === '0707') {
+    try { sessionStorage.setItem('and_index_auth', '1'); } catch(e) {}
+    document.getElementById('gate').style.display = 'none';
+  } else {
+    document.getElementById('gateErr').textContent = 'パスワードが違います';
+    document.getElementById('gateInput').value = '';
+  }
+}
+(function() {
+  var authed = false;
+  try { authed = sessionStorage.getItem('and_index_auth') === '1'; } catch(e) {}
+  if (authed) {
+    document.getElementById('gate').style.display = 'none';
+  } else {
+    var i = document.getElementById('gateInput');
+    if (i) i.focus();
+  }
+})();
+</script>
 
 
 
@@ -1598,7 +1664,7 @@ body {
       <button class="nav-item active" onclick="filterCat('all', this)">
         <div class="nav-dot" style="background:#888"></div>
         すべて
-        <span class="nav-count">16</span>
+        <span class="nav-count">17</span>
       </button>
       <button class="nav-item" onclick="filterCat('組織・理念', this)">
         <div class="nav-dot" style="background:var(--c-org)"></div>
@@ -1619,6 +1685,11 @@ body {
         <div class="nav-dot" style="background:var(--c-tool)"></div>
         業務ツール
         <span class="nav-count">4</span>
+      </button>
+      <button class="nav-item" onclick="filterCat('動画編集のプリセット', this)">
+        <div class="nav-dot" style="background:var(--c-preset)"></div>
+        動画編集のプリセット
+        <span class="nav-count">1</span>
       </button>
     </div>
 
@@ -1713,6 +1784,7 @@ const data = [
   {cat:"業務ツール",name:"ディレクター週次報告シート",desc:"毎週日曜提出。",target:"ディレクター",url:"https://docs.google.com/spreadsheets/d/1PAE0s5j67H-I_J521aYVfkQ_8IxSjqf6hYCzpETmo34/edit?gid=1325085979#gid=1325085979",icon:"📊"},
   {cat:"業務ツール",name:"オンボーディング",desc:"オンボーディング表・手順書はこちら。",target:"ディレクター",url:"#",icon:"🗓️",action:"openOnboarding"},
   {cat:"業務ツール",name:"編集自動化プラグイン",desc:"編集を自動化するプラグイン一式。",target:"ディレクター",url:"https://drive.google.com/drive/folders/13wQOlvRUMphKjok9S85Y6kEUPyu88ezf?usp=sharing",icon:"⚙️"},
+  {cat:"動画編集のプリセット",name:"動画編集プリセット",desc:"編集で使用するプリセット一式。",target:"ディレクター",url:"https://drive.google.com/drive/folders/1Yjub2w1mQQFkMVQlTSn6QtfmhKeSqwLK?usp=drive_link",icon:"🎬"},
 ];
 
 const catConfig = {
@@ -1720,10 +1792,11 @@ const catConfig = {
   "情報・連絡":  { color: "#29ABE2", bg: "#e8f4fb", light: "#d3e9f7", badge: "#29ABE2" },
   "学習・育成":  { color: "#10b981", bg: "#ecfdf5", light: "#d1fae5", badge: "#10b981" },
   "業務ツール":  { color: "#f59e0b", bg: "#fffbeb", light: "#fde9c2", badge: "#f59e0b" },
+  "動画編集のプリセット": { color: "#ec4899", bg: "#fdf2f8", light: "#fce7f3", badge: "#ec4899" },
 };
 
-const catOrder = ["組織・理念","情報・連絡","学習・育成","業務ツール"];
-const forceLarge = ["情報・連絡","学習・育成","業務ツール"];
+const catOrder = ["組織・理念","情報・連絡","学習・育成","業務ツール","動画編集のプリセット"];
+const forceLarge = ["情報・連絡","学習・育成","業務ツール","動画編集のプリセット"];
 let currentCat = "all";
 let currentTarget = "all";
 
