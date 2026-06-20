@@ -1179,6 +1179,47 @@ body {
 }
 .org-card { position: relative; }
 
+/* ─── YOUTUBE COACH BANNER ─── */
+.coach-banner {
+  display: flex; align-items: center; gap: 1.3rem;
+  margin: 1.75rem 2.5rem .25rem;
+  padding: 1.6rem 2rem;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #29ABE2 0%, #1577B8 60%, #0f5a92 100%);
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(21,119,184,.32);
+  position: relative; overflow: hidden;
+  transition: transform .15s, box-shadow .15s;
+}
+.coach-banner::after {
+  content: ''; position: absolute; top: -50px; right: -30px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.coach-banner:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(21,119,184,.42); }
+.coach-icon {
+  width: 64px; height: 64px; border-radius: 18px;
+  background: rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; flex-shrink: 0;
+}
+.coach-body { flex: 1; min-width: 0; }
+.coach-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  color: #ffe9a8; margin-bottom: .35rem;
+}
+.coach-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.15; }
+.coach-sub { font-size: 14px; color: rgba(255,255,255,.85); margin-top: .35rem; }
+.coach-arrow { font-size: 28px; color: rgba(255,255,255,.7); flex-shrink: 0; }
+@media (max-width: 768px) {
+  .coach-banner { margin: 1.25rem 1rem .25rem; padding: 1.3rem 1.3rem; gap: 1rem; }
+  .coach-icon { width: 52px; height: 52px; font-size: 28px; }
+  .coach-title { font-size: 21px; }
+  .coach-sub { font-size: 13px; }
+  .coach-arrow { display: none; }
+}
+
 /* ─── MVV (top page) ─── */
 .mvv-wrap {
   padding: 1.75rem 2.5rem .5rem;
@@ -1711,6 +1752,17 @@ function checkGate() {
   <!-- MAIN -->
   <div class="main">
 
+    <!-- YOUTUBE COACH -->
+    <a class="coach-banner" id="coachBanner" href="https://dashboard-app-phi-gray.vercel.app/" target="_blank" rel="noopener noreferrer">
+      <div class="coach-icon">🎓</div>
+      <div class="coach-body">
+        <div class="coach-eyebrow">★ 最重要 ・ まずはここから</div>
+        <div class="coach-title">YouTubeコーチ</div>
+        <div class="coach-sub">チャンネル運用の相談・サポートはこちら</div>
+      </div>
+      <div class="coach-arrow">→</div>
+    </a>
+
     <!-- MVV STRIP -->
     <div class="mvv-wrap" id="mvvStrip">
       <div class="mvv-purpose-card" onclick="openPMVV()">
@@ -1900,6 +1952,7 @@ function filterCat(cat, el) {
   el.classList.add("active");
   const show = cat === "all";
   document.getElementById("mvvStrip").style.display = show ? "" : "none";
+  document.getElementById("coachBanner").style.display = show ? "" : "none";
   render();
 }
 
@@ -1909,6 +1962,7 @@ function filterTarget(target, el) {
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   el.classList.add("active");
   document.getElementById("mvvStrip").style.display = "none";
+  document.getElementById("coachBanner").style.display = "none";
   render();
 }
 
