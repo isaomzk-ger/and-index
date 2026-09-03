@@ -1987,6 +1987,7 @@ const ORG = {
   depts: [
     { name: "CS",       sub: "中嶋",                   color: "#10b981" },
     { name: "経理",     sub: "吉岡",                   color: "#0ea5e9" },
+    { name: "人事部",   sub: "古澤",                   color: "#ec4899" },
     { name: "開発部",   sub: "古澤・原",               color: "#8b5cf6" },
     { name: "特別顧問", sub: "鹿又・マリーヌ・パリス", color: "#64748b" }
   ],
@@ -2004,9 +2005,9 @@ function orgVLine(h) {
 }
 
 function renderOrgChart() {
-  const W = 190, ROW = 880;
+  const W = 175, ROW = 1050;
   return `<div class="org-tree-scroll">
-    <div style="min-width:840px;display:flex;flex-direction:column;align-items:center;padding:1rem 0 1.5rem">
+    <div style="min-width:1000px;display:flex;flex-direction:column;align-items:center;padding:1rem 0 1.5rem">
 
       ${orgNode(ORG.ceo, "president")}
       ${orgVLine(22)}
@@ -2058,6 +2059,8 @@ const contactDesks = [
     items: ["クライアントとのやり取り・連絡", "新規チャンネルの立ち上げ・登録", "クライアントからの要望・クレームの一次受け", "レポート提出の仕方"] },
   { group: "daily", name: "経理",     who: "吉岡",        color: "#0ea5e9", icon: "🧾",
     items: ["請求書の出し方・締め日", "報酬の支払い・入金の確認", "経費の精算"] },
+  { group: "daily", name: "人事部",   who: "古澤",        color: "#ec4899", icon: "🧑‍💼",
+    items: ["編集者の手配・アサイン相談", "編集者の稼働状況について", "新しい編集者の採用について"] },
   { group: "daily", name: "開発部",   who: "古澤・原",    color: "#8b5cf6", icon: "🛠",
     items: ["ダッシュボードが動かない・エラーが出る", "ログインできない／担当chが表示されない", "AI予算・AI機能が止まった", "画像生成ツール・編集プラグインの不具合", "ツールへの改善要望"] },
   { group: "daily", name: "特別顧問", who: "鹿又・マリーヌ・パリス", color: "#64748b", icon: "🧭",
@@ -2102,10 +2105,9 @@ function renderContact() {
   ${label("上に上げるとき")}
   ${grid(contactDesks.filter(d => d.group === "up"))}
   ${label("フォームで問い合わせる")}
-  <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:1rem">
-    <div style="font-size:13px;color:#3a3a3c;margin-bottom:.75rem">窓口が分からない場合や、記録を残したい場合はこちらから送信してください。</div>
-    <iframe src="${CONTACT_FORM_URL}?embedded=true" width="100%" height="850" style="border:none;border-radius:10px;display:block">読み込み中…</iframe>
-    <a href="${CONTACT_FORM_URL}" target="_blank" rel="noopener" style="display:inline-block;margin-top:.6rem;font-size:12px;color:#29ABE2">新しいタブで開く ↗</a>
+  <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:1.25rem;text-align:center">
+    <div style="font-size:13px;color:#3a3a3c;margin-bottom:.9rem">窓口が分からない場合や、記録を残したい場合はこちらからご連絡ください。</div>
+    <a href="${CONTACT_FORM_URL}" target="_blank" rel="noopener" style="display:inline-block;background:#29ABE2;color:#fff;font-weight:700;font-size:14px;padding:.75rem 1.9rem;border-radius:10px;text-decoration:none">📮 問い合わせフォームを開く ↗</a>
   </div>
   `;
 }
