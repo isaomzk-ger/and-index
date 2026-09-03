@@ -1297,7 +1297,7 @@ body {
 }
 
 /* ─── ORG TREE ─── */
-.org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; }
+.org-tree-scroll { overflow-x: auto; padding-bottom: 1rem; display: flex; justify-content: center; }
 .org-tree-hint { font-size: 12px; color: #aeaeb2; margin-bottom: 1rem; }
 .tree { display: inline-block; min-width: 100%; text-align: center; padding-top: .5rem; }
 .tree ul {
@@ -1329,8 +1329,8 @@ body {
   display: inline-block;
   background: #fff; border: 1px solid rgba(0,0,0,.08);
   border-top: 3px solid var(--nc, #888);
-  border-radius: 10px; padding: .45rem .7rem;
-  min-width: 72px; box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  border-radius: 12px; padding: .75rem 1.15rem;
+  min-width: 100px; box-shadow: 0 1px 4px rgba(0,0,0,.05);
   transition: transform .15s, box-shadow .15s;
 }
 .tree li:hover > .tree-node {
@@ -1373,14 +1373,14 @@ body {
 }
 .tree-chip-name { font-size: 11px; font-weight: 600; color: #1d1d1f; }
 .tree-chip-role { font-size: 9px; color: #8b8b90; margin-top: 1px; }
-.tree-node-name { font-size: 12px; font-weight: 600; color: inherit; white-space: nowrap; }
-.tree-node.president .tree-node-name { font-size: 14px; }
+.tree-node-name { font-size: 17px; font-weight: 700; color: inherit; white-space: nowrap; }
+.tree-node.president .tree-node-name { font-size: 22px; }
 .tree-node-role {
-  font-size: 9px; margin-top: 2px; line-height: 1.3;
-  color: rgba(110,110,115,.9); white-space: nowrap;
+  font-size: 14px; margin-top: 3px; line-height: 1.35;
+  color: #3a3a3c; font-weight: 500; white-space: nowrap;
 }
 .tree-node.president .tree-node-role,
-.tree-node.dept .tree-node-role { color: rgba(255,255,255,.7); }
+.tree-node.dept .tree-node-role { color: rgba(255,255,255,.92); }
 
 /* ─── PASSWORD GATE ─── */
 .gate {
@@ -1981,8 +1981,8 @@ render();
 
 // ─── ORG DATA（部門粒度。ディレクター個人名は載せない） ───
 const ORG = {
-  ceo:      { name: "石川",     sub: "社長",       color: "#1d1d1f" },
-  officers: { name: "役員",     sub: "望月・田畑", color: "#29ABE2" },
+  ceo:      { name: "石川",     sub: "代表取締役社長",           color: "#1d1d1f" },
+  officers: { name: "役員",     sub: "望月（CFO）・田畑（CMO）", color: "#29ABE2" },
   head:     { name: "事業部長", sub: "小峯",       color: "#f59e0b" },
   depts: [
     { name: "CS",       sub: "中嶋",                   color: "#10b981" },
@@ -1994,7 +1994,7 @@ const ORG = {
 };
 
 function orgNode(n, cls) {
-  return `<div class="tree-node ${cls || ""}" style="--nc:${n.color};text-align:center;min-width:120px">
+  return `<div class="tree-node ${cls || ""}" style="--nc:${n.color};text-align:center;min-width:150px">
     <div class="tree-node-name">${n.name}</div>
     ${n.sub ? `<div class="tree-node-role" style="white-space:normal;line-height:1.45">${n.sub}</div>` : ""}
   </div>`;
@@ -2004,42 +2004,37 @@ function orgVLine(h) {
 }
 
 function renderOrgChart() {
-  const W = 140, ROW = 620;
-  return `<div class="org-tree-hint">📐 事業部長（小峯）の直下に各部門・稼働ディレクターが紐づく構成です。</div>
-  <div class="org-tree-scroll">
-    <div style="min-width:680px;display:flex;flex-direction:column;align-items:center;padding:.5rem 0 1rem">
+  const W = 190, ROW = 880;
+  return `<div class="org-tree-scroll">
+    <div style="min-width:840px;display:flex;flex-direction:column;align-items:center;padding:1rem 0 1.5rem">
 
       ${orgNode(ORG.ceo, "president")}
-      ${orgVLine(18)}
+      ${orgVLine(22)}
       ${orgNode(ORG.officers)}
-      ${orgVLine(18)}
+      ${orgVLine(22)}
       ${orgNode(ORG.head)}
-      ${orgVLine(18)}
+      ${orgVLine(22)}
 
       <div style="width:100%;max-width:${ROW}px">
         <div style="width:calc(100% - ${W}px);margin:0 auto;height:0;border-top:2px solid #d0d0d6"></div>
         <div style="display:flex;justify-content:space-between">
           ${ORG.depts.map(d => `
             <div style="width:${W}px;display:flex;flex-direction:column;align-items:center">
-              ${orgVLine(16)}
+              ${orgVLine(18)}
               ${orgNode(d)}
             </div>`).join("")}
         </div>
       </div>
 
-      ${orgVLine(18)}
-      <div style="width:100%;max-width:720px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#aeaeb2;text-align:center;margin-bottom:.6rem">稼働ディレクター（${ORG.directors.length}名）</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
-          ${ORG.directors.map(n => `<span style="font-size:12.5px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:.4rem .7rem;color:#1d1d1f">${n}</span>`).join("")}
+      ${orgVLine(22)}
+      <div style="width:100%;max-width:900px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#6e6e73;text-align:center;margin-bottom:.85rem">稼働ディレクター（${ORG.directors.length}名）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+          ${ORG.directors.map(n => `<span style="font-size:15px;font-weight:500;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:9px;padding:.55rem 1rem;color:#1d1d1f">${n}</span>`).join("")}
         </div>
       </div>
 
     </div>
-  </div>
-  <div style="font-size:11px;color:#aeaeb2;margin-top:.75rem;line-height:1.7">
-    ・特別顧問は担当領域ごとの相談先です（パリス＝ショート動画）。<br>
-    ・ディレクターは全員、事業部長（小峯）の直轄です。
   </div>`;
 }
 
