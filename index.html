@@ -1981,15 +1981,16 @@ render();
 
 // ─── ORG DATA（部門粒度。ディレクター個人名は載せない） ───
 const ORG = {
-  ceo:      { name: "石川",     sub: "社長",                    color: "#1d1d1f" },
-  officers: { name: "役員",     sub: "望月・田畑",              color: "#29ABE2" },
-  advisors: { name: "特別顧問", sub: "鹿又・マリーヌ・パリス",  color: "#64748b" },
-  head:     { name: "事業部長", sub: "小峯",                    color: "#f59e0b" },
+  ceo:      { name: "石川",     sub: "社長",       color: "#1d1d1f" },
+  officers: { name: "役員",     sub: "望月・田畑", color: "#29ABE2" },
+  head:     { name: "事業部長", sub: "小峯",       color: "#f59e0b" },
   depts: [
-    { name: "CS",     sub: "中嶋",     color: "#10b981" },
-    { name: "経理",   sub: "吉岡",     color: "#0ea5e9" },
-    { name: "開発部", sub: "古澤・原", color: "#8b5cf6" }
-  ]
+    { name: "CS",       sub: "中嶋",                   color: "#10b981" },
+    { name: "経理",     sub: "吉岡",                   color: "#0ea5e9" },
+    { name: "開発部",   sub: "古澤・原",               color: "#8b5cf6" },
+    { name: "特別顧問", sub: "鹿又・マリーヌ・パリス", color: "#64748b" }
+  ],
+  directors: ["猪澤","古澤","小松原","長尾","新井","森脇","國井","石川","吉永","松田","坂井","吉見","横山","小池","元山","矢内","中嶋","星","古川","根岸"]
 };
 
 function orgNode(n, cls) {
@@ -2003,23 +2004,14 @@ function orgVLine(h) {
 }
 
 function renderOrgChart() {
-  const W = 150, ROW = 560;
-  return `<div class="org-tree-hint">📐 部門ごとの担当です。ディレクターの氏名は掲載していません。</div>
+  const W = 140, ROW = 620;
+  return `<div class="org-tree-hint">📐 事業部長（小峯）の直下に各部門・稼働ディレクターが紐づく構成です。</div>
   <div class="org-tree-scroll">
-    <div style="min-width:640px;display:flex;flex-direction:column;align-items:center;padding:.5rem 0 1rem">
+    <div style="min-width:680px;display:flex;flex-direction:column;align-items:center;padding:.5rem 0 1rem">
 
       ${orgNode(ORG.ceo, "president")}
       ${orgVLine(18)}
-
-      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%">
-        <div></div>
-        ${orgNode(ORG.officers)}
-        <div style="display:flex;align-items:center">
-          <div style="width:40px;height:0;border-top:2px dashed #d0d0d6"></div>
-          ${orgNode(ORG.advisors)}
-        </div>
-      </div>
-
+      ${orgNode(ORG.officers)}
       ${orgVLine(18)}
       ${orgNode(ORG.head)}
       ${orgVLine(18)}
@@ -2035,11 +2027,19 @@ function renderOrgChart() {
         </div>
       </div>
 
+      ${orgVLine(18)}
+      <div style="width:100%;max-width:720px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#aeaeb2;text-align:center;margin-bottom:.6rem">稼働ディレクター（${ORG.directors.length}名）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+          ${ORG.directors.map(n => `<span style="font-size:12.5px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:.4rem .7rem;color:#1d1d1f">${n}</span>`).join("")}
+        </div>
+      </div>
+
     </div>
   </div>
   <div style="font-size:11px;color:#aeaeb2;margin-top:.75rem;line-height:1.7">
-    ・特別顧問は破線＝担当領域ごとの相談先です（パリス＝ショート動画）。<br>
-    ・各ディレクターは所属チームのエグゼクティブDが直属の上長です。
+    ・特別顧問は担当領域ごとの相談先です（パリス＝ショート動画）。<br>
+    ・ディレクターは全員、事業部長（小峯）の直轄です。
   </div>`;
 }
 
@@ -2060,7 +2060,7 @@ function closeOrg() {
 // ─── 問い合わせ先（用件の例は今後調整する） ───
 const contactDesks = [
   { group: "daily", name: "CS",       who: "中嶋",        color: "#10b981", icon: "💬",
-    items: ["クライアントとのやり取り・連絡", "新規チャンネルの立ち上げ・登録", "クライアントからの要望・クレームの一次受け"] },
+    items: ["クライアントとのやり取り・連絡", "新規チャンネルの立ち上げ・登録", "クライアントからの要望・クレームの一次受け", "レポート提出の仕方"] },
   { group: "daily", name: "経理",     who: "吉岡",        color: "#0ea5e9", icon: "🧾",
     items: ["請求書の出し方・締め日", "報酬の支払い・入金の確認", "経費の精算"] },
   { group: "daily", name: "開発部",   who: "古澤・原",    color: "#8b5cf6", icon: "🛠",
@@ -2094,29 +2094,24 @@ function renderContactCard(d) {
   </div>`;
 }
 
+const CONTACT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScOWhIRe5ezXlSOGZOLwf6ExpYqo1jHmB3AdJ6sfBK7E5e47w/viewform";
+
 function renderContact() {
-  const step = (n, t, d) => `<div style="flex:1 1 190px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:11px;padding:.8rem .95rem">
-    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.45)">STEP ${n}</div>
-    <div style="font-size:13.5px;font-weight:600;color:#fff;margin:.15rem 0">${t}</div>
-    <div style="font-size:11.5px;color:rgba(255,255,255,.6);line-height:1.55">${d}</div>
-  </div>`;
   const grid = list => `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:.85rem">${list.map(renderContactCard).join("")}</div>`;
   const label = t => `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#aeaeb2;margin:1.6rem 0 .6rem">${t}</div>`;
 
   return `
   <div style="font-size:12px;color:#aeaeb2;margin-bottom:1rem">💡 「これ、誰に聞けばいいんだろう」をなくすための一覧です。</div>
-  <div style="background:#1d1d1f;border-radius:16px;padding:1.3rem 1.3rem 1.15rem">
-    <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:.85rem">まず、この順番で動く</div>
-    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-      ${step(1, "直属のエグゼクティブD", "担当チャンネルのこと・日々の判断は、まず自分のチームの上長へ。ほとんどはここで解決します。")}
-      ${step(2, "用件ごとの窓口", "下の「用件別の窓口」から。エグゼDで判断がつかない／担当が違うものはここへ。")}
-      ${step(3, "事業部長", "部門をまたぐ・止まっている・急ぎのものは上げてください。")}
-    </div>
-  </div>
   ${label("用件別の窓口")}
   ${grid(contactDesks.filter(d => d.group === "daily"))}
   ${label("上に上げるとき")}
   ${grid(contactDesks.filter(d => d.group === "up"))}
+  ${label("フォームで問い合わせる")}
+  <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:1rem">
+    <div style="font-size:13px;color:#3a3a3c;margin-bottom:.75rem">窓口が分からない場合や、記録を残したい場合はこちらから送信してください。</div>
+    <iframe src="${CONTACT_FORM_URL}?embedded=true" width="100%" height="900" style="border:none;border-radius:10px;display:block">読み込み中…</iframe>
+    <a href="${CONTACT_FORM_URL}" target="_blank" rel="noopener" style="display:inline-block;margin-top:.6rem;font-size:12px;color:#29ABE2">新しいタブで開く ↗</a>
+  </div>
   `;
 }
 
